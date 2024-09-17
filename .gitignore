@@ -1,0 +1,8 @@
+# Ignore virtual environment
+misti_venv/
+
+# Ignore Python cache files
+__pycache__/
+
+# Ignore Jupyter Notebook files
+test.ipynb
