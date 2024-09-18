@@ -1,37 +1,19 @@
-# app.py
 import streamlit as st
-import mysql.connector
-from config import get_connection
-
-def fetch_table_names():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SHOW TABLES")
-    tables = [table[0] for table in cursor.fetchall()]
-    conn.close()
-    return tables
+from scripts.render_form import submit_type_of_application_form,submit_raw_water_source_form
 
 def main():
-    st.title("Survey Form")
+    st.sidebar.title("Navigation")
+    selection = st.sidebar.radio("Go to", ["Home", "Submit Type of Application", "Submit Raw Water Source"])
+
+    if selection == "Home":
+        st.title("Welcome to the Home Page")
+        st.write("Use the sidebar to navigate through the app.")
     
-    # Fetch table names from the database
-    tables = fetch_table_names()
-
-    # Create a form
-    with st.form(key='survey_form'):
-        st.write("Please fill out the survey below:")
-
-        # Dynamically create form fields based on the database schema
-        for table in tables:
-            st.subheader(f"Table: {table}")
-            table_name = st.text_input(f"Enter your {table} name:")
-            st.text_area(f"Enter details for {table}:")
-
-        submit_button = st.form_submit_button(label='Submit')
-        
-        if submit_button:
-            st.write("Thank you for your submission!")
-            # Handle form submission and save data to the database or process it
+    elif selection == "Submit Type of Application":
+        submit_type_of_application_form()
+    
+    elif selection == "Submit Raw Water Source":
+        submit_raw_water_source_form()
 
 if __name__ == "__main__":
     main()
