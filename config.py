@@ -18,6 +18,6 @@ def get_connection():
         return mysql.connector.connect(
             host="localhost",
             user="root",
-            password="your_local_password",  # Update with your local password
+            password="phyrak23",  # Update with your local password
             database="misti"
         )
