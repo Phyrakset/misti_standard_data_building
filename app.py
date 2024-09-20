@@ -3,7 +3,7 @@ from PIL import Image
 from scripts.render_form import (submit_type_of_application_form, submit_raw_water_source_form
                                  ,submit_for_of_oficial_user_only_form
                                  ,submit_company_form
-                                 )
+                                 ,submit_company_signature_form)
 
 
 # Function to display the ministry's logo and align it with the name
@@ -24,7 +24,10 @@ def display_logo_with_name():
 def main():
     # Sidebar for navigation
     st.sidebar.title("Navigation")
-    selection = st.sidebar.radio("Go to", ["Home", "Submit Type of Application","Submit Company","Submit Official User Data", "Submit Raw Water Source"])
+    selection = st.sidebar.radio("Go to", ["Home", "Submit Type of Application",
+                                           "Submit Company","Submit Company Signature",
+                                           "Submit Official User Data",
+                                             "Submit Raw Water Source"])
 
     # Home Section
     if selection == "Home":
@@ -59,11 +62,16 @@ def main():
     elif selection == "Submit Official User Data":
         st.header("Submit Official User Data")
         submit_for_of_oficial_user_only_form()
+   
     # Submit Company Section
     elif selection == "Submit Company":
         st.header("Submit Company")
         submit_company_form()
 
+    # Submit Company Signature
+    elif selection == "Submit Company Signature":
+        st.header("Submit Company Signature")
+        submit_company_signature_form()
 
 # Entry point of the app
 if __name__ == "__main__":
