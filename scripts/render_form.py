@@ -139,6 +139,7 @@ def submit_company_signature_form():
                 columns=['Name', 'Date', 'Position', 'SignatureOrFingerprint', 'Stamp', 'CompanyID'],
                 form_inputs=form_inputs
             )
+
 def submit_applicant_form():
     st.title("Submit Applicant Form")
     
@@ -271,6 +272,7 @@ def submit_id_card_or_passport_form():
                 ],
                 form_inputs=form_inputs
             )
+
 def submit_address_form():
     st.title("Submit Address Information")
     
@@ -419,6 +421,7 @@ def submit_treatment_plant_form():
                 ],
                 form_inputs=form_inputs
             )
+
 def submit_water_quality_form():
     st.title("Submit Water Quality Information")
     
@@ -843,7 +846,6 @@ def submit_license_form():
                 columns=['LicenseNumber', 'LicenseIssuedDate', 'LicenseExpiryDate', 'LicenseType', 'CompanyID', 'ProductID'],
                 form_inputs=form_inputs
             )
-
 
 def submit_factory_inspection_report_form():
     st.title("Submit Factory Inspection Report")
@@ -1988,7 +1990,6 @@ def submit_doc_represent_company_form():
                 form_inputs=form_inputs
             )
 
-
 def submit_doc_establishment_factory_form():
     st.title("Submit Document for Establishment of Factory")
 
@@ -2303,6 +2304,1640 @@ def submit_infor_factory_manager_form():
                     'Number_employee_production_section',
                     'Number_employee_service_section',
                     'Number_employee_other_section', 'Total_employees', 'FactoryID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_infor_quality_controlprogram_form():
+    st.title("Submit Information for Quality Control Program")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+
+    with st.form(key='infor_quality_controlprogram_form'):
+        describe_processing_flow = st.text_area("Describe Processing Flow")
+
+        # Dropdown for selecting FactoryID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                describe_processing_flow,
+                selected_factory_id
+            ]
+
+            submit_form(
+                table_name='infor_quality_controlprogram',
+                columns=['DescribeprocessingFlow', 'FactoryID'],
+                form_inputs=form_inputs
+            )
+
+def submit_infor_investment_asset_form():
+    st.title("Submit Information for Investment Asset")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+
+    with st.form(key='infor_investment_asset_form'):
+        total_values_machinery_facilities = st.text_input("Total Estimated Values of Machinery & Facilities")
+        total_values_vehicle_transportation = st.text_input("Total Estimated Values of Vehicle & Transportation")
+        total_values_building = st.text_input("Total Estimated Values of Building")
+        total_values_other_fixed_assets = st.text_input("Total Estimated Values of Other Fixed Assets")
+        total_values_working_capital = st.text_input("Total Estimated Values of Working Capital")
+        total_values_investment = st.text_input("Total Estimated Values of Investment")
+        source_investment = st.text_input("Source of Investment")
+        estimated_percentage = st.text_input("Estimated Percentage")
+
+        # Dropdown for selecting FactoryID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                total_values_machinery_facilities,
+                total_values_vehicle_transportation,
+                total_values_building,
+                total_values_other_fixed_assets,
+                total_values_working_capital,
+                total_values_investment,
+                source_investment,
+                estimated_percentage,
+                selected_factory_id
+            ]
+
+            submit_form(
+                table_name='infor_investment_asset',
+                columns=[
+                    'Total_Estimated_values_machinery_facilities',
+                    'Total_Estimated_values_vehicle_transpotation',
+                    'Total_estimated_values_building',
+                    'Total_estimate_values_other_fixed_assets',
+                    'Total_estimated_values_working_capital',
+                    'Total_estimated_values_investment',
+                    'Souce_Investment',
+                    'Estimated_percentage',
+                    'FactoryID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_infor_machinery_facilities_form():
+    st.title("Submit Information for Machinery Facilities")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+
+    with st.form(key='infor_machinery_facilities_form'):
+        list_machinery_facilities = st.text_input("List of Machinery Facilities")
+        unit = st.text_input("Unit")
+        quantity = st.text_input("Quantity")
+        amount = st.text_input("Amount")
+        domestic = st.text_input("Domestic")
+        import_from = st.text_input("Import From")
+
+        # Dropdown for selecting FactoryID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                list_machinery_facilities,
+                unit,
+                quantity,
+                amount,
+                domestic,
+                import_from,
+                selected_factory_id
+            ]
+
+            submit_form(
+                table_name='infor_machinery_facilities',
+                columns=[
+                    'List_Machinery_facilities',
+                    'Unit',
+                    'Quatity',
+                    'Amount',
+                    'Domestic',
+                    'ImportFrom',
+                    'FactoryID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_infor_planed_product_output_form():
+    st.title("Submit Planned Product Output Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+
+    with st.form(key='infor_planed_product_output_form'):
+        description_products = st.text_input("Description of Products")
+        unit = st.text_input("Unit")
+        quantity_first_year = st.text_input("Quantity for First Year")
+        amount_first_year = st.text_input("Amount for First Year")
+        domestic_percentage_market = st.text_input("Domestic Market Percentage")
+        export_percentage_market = st.text_input("Export Market Percentage")
+        quantity_full_capacity = st.text_input("Quantity at Full Capacity")
+        amount_full_capacity = st.text_input("Amount at Full Capacity")
+
+        # Dropdown for selecting FactoryID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                description_products,
+                unit,
+                quantity_first_year,
+                amount_first_year,
+                domestic_percentage_market,
+                export_percentage_market,
+                quantity_full_capacity,
+                amount_full_capacity,
+                selected_factory_id
+            ]
+
+            submit_form(
+                table_name='infor_planed_product_output',
+                columns=[
+                    'Description_Products', 'Unit', 'Quantity_firs_year', 'Amount_first_year',
+                    'Domestic_percentage_market', 'Export_percentage_market', 'Quantity_full_capacity',
+                    'Amount_full_capacity', 'FactoryID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_infor_product_waste_form():
+    st.title("Submit Product Waste Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+
+    with st.form(key='infor_product_waste_form'):
+        solid_waste = st.text_input("Solid Waste")
+        liquid_waste = st.text_input("Liquid Waste")
+        emission_waste = st.text_input("Emission Waste")
+
+        # Dropdown for selecting FactoryID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                solid_waste,
+                liquid_waste,
+                emission_waste,
+                selected_factory_id
+            ]
+
+            submit_form(
+                table_name='infor_product_waste',
+                columns=['Solid_waste', 'Liquid_waste', 'Emission_waste', 'FactoryID'],
+                form_inputs=form_inputs
+            )
+
+def submit_applic_calibration_metrology_form():
+    st.title("Submit Calibration Metrology Application Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    address_data = db_helper.fetch_data('address', ['AddressID', 'officeAddress'])
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    company_data = db_helper.fetch_data('company', ['CompanyID', 'Name'])
+    personal_info_data = db_helper.fetch_data('personal_infor_for_applicant', ['PersonalInforForApplicantID', 'KhmerName'])
+    product_data = db_helper.fetch_data('product', ['ProductID', 'ProductName'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    address_options = {row[0]: row[1] for row in address_data}
+    factory_options = {row[0]: row[1] for row in factory_data}
+    company_options = {row[0]: row[1] for row in company_data}
+    personal_info_options = {row[0]: row[1] for row in personal_info_data}
+    product_options = {row[0]: row[1] for row in product_data}
+
+    with st.form(key='applic_calibration_metrology_form'):
+        request_details = st.text_area("Request Details")
+
+        # Dropdown for selecting AddressID, FactoryID, CompanyID, PersonalInforForApplicantID, ProductID
+        selected_address_id = st.selectbox("Select Address", options=list(address_options.keys()), format_func=lambda x: address_options[x])
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+        selected_company_id = st.selectbox("Select Company", options=list(company_options.keys()), format_func=lambda x: company_options[x])
+        selected_personal_info_id = st.selectbox("Select Applicant's Personal Information", options=list(personal_info_options.keys()), format_func=lambda x: personal_info_options[x])
+        selected_product_id = st.selectbox("Select Product", options=list(product_options.keys()), format_func=lambda x: product_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                request_details,
+                selected_address_id,
+                selected_factory_id,
+                selected_company_id,
+                selected_personal_info_id,
+                selected_product_id
+            ]
+
+            submit_form(
+                table_name='applic_calibration_metrology',
+                columns=[
+                    'RequestDetails',
+                    'addresstID',
+                    'FactoryID',
+                    'CompanyID',
+                    'PersonalInforForApplicantID',
+                    'ProductID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_metrology_calibration_form():
+    st.title("Submit Metrology Calibration Application Documents")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    application_data = db_helper.fetch_data('applic_calibration_metrology', ['ApplicationMetrologyID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    application_options = {row[0]: f"Application ID: {row[0]}" for row in application_data}
+
+    with st.form(key='doc_applic_metrology_calibration_form'):
+        statute_technical = st.file_uploader("Upload Technical Statute", type=["pdf", "jpg", "jpeg", "png"])
+        transfer_letter = st.file_uploader("Upload Transfer Letter", type=["pdf", "jpg", "jpeg", "png"])
+        id_passport_card = st.file_uploader("Upload ID or Passport Card", type=["pdf", "jpg", "jpeg", "png"])
+
+        # Dropdown for selecting ApplicationMetrologyID
+        selected_application_id = st.selectbox("Select Application Metrology ID", options=list(application_options.keys()), format_func=lambda x: application_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            # Convert uploaded files to bytes
+            statute_technical_blob = statute_technical.getvalue() if statute_technical else None
+            transfer_letter_blob = transfer_letter.getvalue() if transfer_letter else None
+            id_passport_card_blob = id_passport_card.getvalue() if id_passport_card else None
+
+            form_inputs = [
+                statute_technical_blob,
+                transfer_letter_blob,
+                id_passport_card_blob,
+                selected_application_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_metrology_calibration',
+                columns=[
+                    'Statute_technical',
+                    'Transfer_latter',
+                    'ID_passport_card',
+                    'ApplicationMetrologyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_applic_license_repair_metrology_form():
+    st.title("Submit License Repair Metrology Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    address_data = db_helper.fetch_data('address',['AddressID','OfficeAddress'])
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    company_data = db_helper.fetch_data('company', ['CompanyID', 'Name'])
+    personal_info_data = db_helper.fetch_data('personal_infor_for_applicant', ['PersonalInforForApplicantID'])
+    product_data = db_helper.fetch_data('product', ['ProductID', 'ProductName'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    adddress_options = {row[0]:row[1] for row in address_data}
+    factory_options = {row[0]: row[1] for row in factory_data}
+    company_options = {row[0]: row[1] for row in company_data}
+    personal_info_options = {row[0]: f"Applicant ID: {row[0]}" for row in personal_info_data}
+    product_options = {row[0]: row[1] for row in product_data}
+
+    with st.form(key='applic_license_repair_metrology_form'):
+        request_details = st.text_area("Request Details")
+
+        # Dropdown for selecting AddressID, FactoryID, CompanyID, PersonalInforForApplicantID, ProductID
+        selected_address_id = st.selectbox("Select Address", options=list(adddress_options.keys()), format_func=lambda x: adddress_options[x])
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+        selected_company_id = st.selectbox("Select Company", options=list(company_options.keys()), format_func=lambda x: company_options[x])
+        selected_personal_info_id = st.selectbox("Select Applicant", options=list(personal_info_options.keys()), format_func=lambda x: personal_info_options[x])
+        selected_product_id = st.selectbox("Select Product", options=list(product_options.keys()), format_func=lambda x: product_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                request_details,
+                selected_address_id,
+                selected_factory_id,
+                selected_company_id,
+                selected_personal_info_id,
+                selected_product_id
+            ]
+
+            submit_form(
+                table_name='applic_license_repair_metrology',
+                columns=[
+                    'RequestDetails',
+                    'addresstID',
+                    'FactoryID',
+                    'CompanyID',
+                    'PersonalInforForApplicantID',
+                    'ProductID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_applic_metro_verify_form():
+    st.title("Submit Metrology Verification Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    address_data = db_helper.fetch_data('address',['AddressID','OfficeAddress'])
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    company_data = db_helper.fetch_data('company', ['CompanyID', 'Name'])
+    personal_info_data = db_helper.fetch_data('personal_infor_for_applicant', ['PersonalInforForApplicantID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    adddress_options = {row[0]:row[1] for row in address_data}
+    factory_options = {row[0]: row[1] for row in factory_data}
+    company_options = {row[0]: row[1] for row in company_data}
+    personal_info_options = {row[0]: f"Applicant ID: {row[0]}" for row in personal_info_data}
+
+    with st.form(key='applic_metro_verify_form'):
+        request_details = st.text_area("Request Details")
+
+        # Dropdowns for selecting addressID, FactoryID, CompanyID, PersonalInforForApplicantID
+        selected_address_id = st.selectbox("Select Address", options=list(adddress_options.keys()), format_func=lambda x: adddress_options[x])
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+        selected_company_id = st.selectbox("Select Company", options=list(company_options.keys()), format_func=lambda x: company_options[x])
+        selected_personal_info_id = st.selectbox("Select Applicant", options=list(personal_info_options.keys()), format_func=lambda x: personal_info_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                request_details,
+                selected_address_id,
+                selected_factory_id,
+                selected_company_id,
+                selected_personal_info_id
+            ]
+
+            submit_form(
+                table_name='applic_metro_verify',
+                columns=[
+                    'RequestDetails',
+                    'addressID',
+                    'FactoryID',
+                    'CompanyID',
+                    'PersonalInforForApplicantID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_applic_certific_recog_metro_expertise_form():
+    st.title("Submit Application for Certificate Recognition in Metrology Expertise")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    address_data = db_helper.fetch_data('address',['AddressID','OfficeAddress'])
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    company_data = db_helper.fetch_data('company', ['CompanyID', 'Name'])
+    personal_info_data = db_helper.fetch_data('personal_infor_for_applicant', ['PersonalInforForApplicantID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    adddress_options = {row[0]:row[1] for row in address_data}
+    factory_options = {row[0]: row[1] for row in factory_data}
+    company_options = {row[0]: row[1] for row in company_data}
+    personal_info_options = {row[0]: f"Applicant ID: {row[0]}" for row in personal_info_data}
+    with st.form(key='applic_certific_recog_metro_expertise_form'):
+        # File uploader for Photo Application
+        photo_application = st.file_uploader("Upload Photo Application", type=["jpg", "png", "jpeg"])
+
+        request_details = st.text_area("Request Details")
+        foreign_languages = st.text_input("Foreign Languages")
+        general_education_level = st.text_input("General Education Level")
+        work_history = st.text_area("Work History")
+
+        # Dropdowns for selecting FactoryID, CompanyID, and PersonalInforForApplicantID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+        selected_company_id = st.selectbox("Select Company", options=list(company_options.keys()), format_func=lambda x: company_options[x])
+        selected_address_id = st.selectbox("Select Address", options=list(adddress_options.keys()), format_func=lambda x: adddress_options[x])
+        selected_personal_info_id = st.selectbox("Select Applicant", options=list(personal_info_options.keys()), format_func=lambda x: personal_info_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            # Process the photo upload
+            if photo_application:
+                photo_data = photo_application.read()
+
+            form_inputs = [
+                photo_data if photo_application else None,
+                request_details,
+                selected_factory_id,
+                selected_company_id,
+                selected_address_id,
+                foreign_languages,
+                general_education_level,
+                work_history,
+                selected_personal_info_id
+            ]
+
+            submit_form(
+                table_name='applic_certific_recog_metro_expertise',
+                columns=[
+                    'Photo_application',
+                    'RequestDetails',
+                    'FactoryID',
+                    'CompanyID',
+                    'addressID',
+                    'ForeignLanguages',
+                    'GeneralEducationLevel',
+                    'WorkHistory',
+                    'PersonalInforForApplicantID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_applic_checking_importpermmetro_equipment_form():
+    st.title("Submit Application for Checking Import Permission of Metrology Equipment")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    company_data = db_helper.fetch_data('company', ['CompanyID', 'Name'])
+    address_data = db_helper.fetch_data('address', ['addressID', 'officeAddress'])
+    personal_info_data = db_helper.fetch_data('personal_infor_for_applicant', ['PersonalInforForApplicantID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+    company_options = {row[0]: row[1] for row in company_data}
+    address_options = {row[0]: row[1] for row in address_data}
+    personal_info_options = {row[0]: f"Applicant ID: {row[0]}" for row in personal_info_data}
+
+    with st.form(key='applic_checking_importpermmetro_equipment_form'):
+        request_details = st.text_area("Request Details")
+
+        # Dropdowns for selecting FactoryID, CompanyID, AddressID, and PersonalInforForApplicantID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+        selected_company_id = st.selectbox("Select Company", options=list(company_options.keys()), format_func=lambda x: company_options[x])
+        selected_address_id = st.selectbox("Select Address", options=list(address_options.keys()), format_func=lambda x: address_options[x])
+        selected_personal_info_id = st.selectbox("Select Applicant", options=list(personal_info_options.keys()), format_func=lambda x: personal_info_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                request_details,
+                selected_factory_id,
+                selected_company_id,
+                selected_address_id,
+                selected_personal_info_id
+            ]
+
+            submit_form(
+                table_name='applic_checking_importpermmetro_equipment',
+                columns=[
+                    'RequestDetails',
+                    'FactoryID',
+                    'CompanyID',
+                    'addressID',
+                    'PersonalInforForApplicantID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_applic_prototype_approval_certificate_form():
+    st.title("Submit Application for Prototype Approval Certificate")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    company_data = db_helper.fetch_data('company', ['CompanyID', 'Name'])
+    address_data = db_helper.fetch_data('address', ['addressID', 'officeAddress'])
+    personal_info_data = db_helper.fetch_data('personal_infor_for_applicant', ['PersonalInforForApplicantID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+    company_options = {row[0]: row[1] for row in company_data}
+    address_options = {row[0]: row[1] for row in address_data}
+    personal_info_options = {row[0]: f"Applicant ID: {row[0]}" for row in personal_info_data}
+
+    with st.form(key='applic_prototype_approval_certificate_form'):
+        request_details = st.text_area("Request Details")
+
+        # Dropdowns for selecting FactoryID, CompanyID, AddressID, and PersonalInforForApplicantID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+        selected_company_id = st.selectbox("Select Company", options=list(company_options.keys()), format_func=lambda x: company_options[x])
+        selected_address_id = st.selectbox("Select Address", options=list(address_options.keys()), format_func=lambda x: address_options[x])
+        selected_personal_info_id = st.selectbox("Select Applicant", options=list(personal_info_options.keys()), format_func=lambda x: personal_info_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                request_details,
+                selected_factory_id,
+                selected_company_id,
+                selected_address_id,
+                selected_personal_info_id
+            ]
+
+            submit_form(
+                table_name='applic_prototype_approval_certificate',
+                columns=[
+                    'RequestDetails',
+                    'FactoryID',
+                    'CompanyID',
+                    'addressID',
+                    'PersonalInforForApplicantID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_applic_certific_recognition_internal_indu_form():
+    st.title("Submit Application for Internal Industry Certification Recognition")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    factory_data = db_helper.fetch_data('factory', ['FactoryID', 'Name'])
+    company_data = db_helper.fetch_data('company', ['CompanyID', 'Name'])
+    address_data = db_helper.fetch_data('address', ['addressID', 'officeAddress'])
+    personal_info_data = db_helper.fetch_data('personal_infor_for_applicant', ['PersonalInforForApplicantID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    factory_options = {row[0]: row[1] for row in factory_data}
+    company_options = {row[0]: row[1] for row in company_data}
+    address_options = {row[0]: row[1] for row in address_data}
+    personal_info_options = {row[0]: f"Applicant ID: {row[0]}" for row in personal_info_data}
+
+    with st.form(key='applic_certific_recognition_internal_indu_form'):
+        request_details = st.text_area("Request Details")
+
+        # Dropdowns for selecting FactoryID, CompanyID, AddressID, and PersonalInforForApplicantID
+        selected_factory_id = st.selectbox("Select Factory", options=list(factory_options.keys()), format_func=lambda x: factory_options[x])
+        selected_company_id = st.selectbox("Select Company", options=list(company_options.keys()), format_func=lambda x: company_options[x])
+        selected_address_id = st.selectbox("Select Address", options=list(address_options.keys()), format_func=lambda x: address_options[x])
+        selected_personal_info_id = st.selectbox("Select Applicant", options=list(personal_info_options.keys()), format_func=lambda x: personal_info_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                request_details,
+                selected_factory_id,
+                selected_company_id,
+                selected_address_id,
+                selected_personal_info_id
+            ]
+
+            submit_form(
+                table_name='applic_certific_recognition_internal_indu',
+                columns=[
+                    'RequestDetails',
+                    'FactoryID',
+                    'CompanyID',
+                    'addressID',
+                    'PersonalInforForApplicantID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_licese_cam_metrotrand_form():
+    st.title("Submit Application License for Cambodia Metrology and Standards")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    application_data = db_helper.fetch_data('applic_calibration_metrology', ['ApplicationMetrologyID'])
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    application_options = {row[0]: f"Application ID: {row[0]}" for row in application_data}
+
+    with st.form(key='doc_applic_licese_cam_metrotrand_form'):
+        # File uploader for each document
+        metrology_registration_certificate = st.file_uploader("Metrology Registration Certificate", type=['pdf', 'jpg', 'png'])
+        statute_company = st.file_uploader("Statute Company", type=['pdf', 'jpg', 'png'])
+        expired_license = st.file_uploader("Expired License Use Cambodia Metrology", type=['pdf', 'jpg', 'png'])
+        inspection_certificate = st.file_uploader("Inspection Verification Certificate", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting ApplicationMetrologyID
+        selected_application_id = st.selectbox("Select Application Metrology", options=list(application_options.keys()), format_func=lambda x: application_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+           
+            form_inputs = [
+
+                metrology_registration_certificate.read() if metrology_registration_certificate else None,
+                statute_company.read() if statute_company else None,
+                expired_license.read() if expired_license else None,
+                inspection_certificate.read() if inspection_certificate else None,
+                selected_application_id
+            ]
+
+            # Submit form using the helper function
+            submit_form(
+                table_name='doc_applic_licese_cam_metrotrand',
+                columns=[
+                    'Metrology_Registration_certificate',
+                    'Statute_campany',
+                    'Expired_License_use_Cambodia_metrology',
+                    'Inspection_Verification_Certificate',
+                    'ApplicationMetrologyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_metrology_instrument_form():
+    st.title("Submit Metrology Instrument Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    product_data = db_helper.fetch_data('product', ['ProductID', 'ProductName'])
+    application_data = db_helper.fetch_data('applic_calibration_metrology', ['ApplicationMetrologyID'])
+    license_repair_data = db_helper.fetch_data('applic_license_repair_metrology', ['licenserepair_metrologyId'])
+    prototype_approval_data = db_helper.fetch_data('applic_prototype_approval_certificate', ['Applicatio_Prototype_Approval_CertificateID'])
+    recognition_internal_data = db_helper.fetch_data('applic_certific_recognition_internal_indu', ['idApplicationCertificateRecognitionInternal'])
+    doc_license_data = db_helper.fetch_data('doc_applic_licese_cam_metrotrand', ['DocAppliLiceUseCamMetroTrandID'])
+    import_permision_equipment= db_helper.fetch_data('applic_checking_importpermmetro_equipment',['ApplicationImportPermissionMetrologyEquipmentID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    product_options = {row[0]: row[1] for row in product_data}
+    application_options = {row[0]: f"Application ID: {row[0]}" for row in application_data}
+    repair_options = {row[0]: f"Application License Repair Metrology ID: {row[0]}" for row in license_repair_data}
+    prototype_options = {row[0]: f"Application Prototype Approval Certificate ID: {row[0]} " for row in prototype_approval_data}
+    recognition_options = {row[0]: f"Application Certificate Recognition Internal Industry ID: {row[0]} "for row in recognition_internal_data}
+    license_in_cambodia_options = {row[0]: f"Document Application License Metrology Using in Cambodia ID: {row[0]}" for row in doc_license_data}
+    application_permision_import_options = {row[0]: f"Application Checking Import Permision Metrology Equipment ID: {row[0]}" for row in import_permision_equipment}
+
+    with st.form(key='metrology_instrument_form'):
+        instrument_name = st.text_input("Instrument Name")
+        serial_number = st.text_input("Serial Number")
+        calibration_level = st.text_input("Calibration Level")
+        calibration_number = st.text_input("Calibration Number")
+        other = st.text_area("Other Information")
+        calibration_certificate_number = st.text_input("Calibration Certificate Number")
+
+        # Dropdowns for selecting foreign keys
+        selected_product_id = st.selectbox("Select Product", options=list(product_options.keys()), format_func=lambda x: product_options[x])
+        selected_application_id = st.selectbox("Select Application Metrology", options=list(application_options.keys()), format_func=lambda x: application_options[x])
+        selected_Repair_License_id= st.selectbox("Select License Repair Metrology", options=list(repair_options.keys()), format_func=lambda x: repair_options[x])
+        selected_Prototype_Approval_id = st.selectbox("Select Prototype Approval", options=list(prototype_options.keys()), format_func=lambda x: prototype_options[x])
+        selected_recognition_id = st.selectbox("Select Recognition Internal", options=list(recognition_options.keys()), format_func=lambda x: recognition_options[x])
+        selected_License_Metrology_Cambodia_id = st.selectbox("Select License Metrology Using in Cambodia", options=list(license_in_cambodia_options.keys()), format_func=lambda x: license_in_cambodia_options[x])
+        selected_permision_import_id = st.selectbox("Select License", options=list(application_permision_import_options.keys()), format_func=lambda x: application_permision_import_options[x])
+        
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                instrument_name,
+                serial_number,
+                calibration_level,
+                calibration_number,
+                other,
+                calibration_certificate_number,
+                selected_product_id,
+                selected_application_id,
+                selected_Repair_License_id,
+                selected_Prototype_Approval_id,
+                selected_recognition_id,
+                selected_License_Metrology_Cambodia_id,
+                selected_permision_import_id,
+            ]
+
+            submit_form(
+                table_name='metrology_intrument',
+                columns=[
+                    'Intrument_name',
+                    'Serial_number',
+                    'Calibratio_level',
+                    'Calibration_Number',
+                    'Other',
+                    'Calibration_certificate_number',
+                    'ProductID',
+                    'ApplicationMetrologyID',
+                    'licenserepair_metrologyId',
+                    'Applicatio_Prototype_Approval_CertificateID',
+                    'idApplicationCertificateRecognitionInternal',
+                    'DocAppliLiceUseCamMetroTrandID',
+                    'ApplicationImportPermissionMetrologyEquipmentID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_certificate_calibration_form():
+    st.title("Submit Calibration Certificate Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    calibration_data = db_helper.fetch_data('applic_calibration_metrology', ['ApplicationMetrologyID'])
+    repair_data = db_helper.fetch_data('applic_license_repair_metrology', ['licenserepair_metrologyId'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    calibration_options = {row[0]: f"Application Metrology ID: {row[0]}" for row in calibration_data}
+    repair_options = {row[0]: f"Repair License ID: {row[0]}" for row in repair_data}
+
+    with st.form(key='certificate_calibration_form'):
+        result_calibration_no = st.number_input("Result Calibration Number", min_value=0, step=1)
+
+        # Dropdowns for selecting foreign keys
+        selected_calibration_id = st.selectbox("Select Application Metrology", options=list(calibration_options.keys()), format_func=lambda x: calibration_options[x])
+        selected_repair_id = st.selectbox("Select Repair License", options=list(repair_options.keys()), format_func=lambda x: repair_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                result_calibration_no,
+                selected_repair_id,
+                selected_calibration_id,
+            ]
+
+            submit_form(
+                table_name='certificate_calibration',
+                columns=[
+                    'Result_Calibration_No',
+                    'licenserepair_metrologyId',
+                    'ApplicationMetrologyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_instrument_infor_form():
+    st.title("Submit Instrument Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    metrology_instrument_data = db_helper.fetch_data('metrology_intrument', ['idMetrologyIntrument'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    instrument_options = {row[0]: f"Instrument ID: {row[0]}" for row in metrology_instrument_data}
+
+    with st.form(key='instrument_infor_form'):
+        product_capability = st.text_input("Product Capability")
+        produce_country = st.text_input("Country of Production")
+        location_using = st.text_input("Location of Use")
+
+        # Dropdown for selecting Metrology Instrument ID
+        selected_instrument_id = st.selectbox("Select Metrology Instrument", options=list(instrument_options.keys()), format_func=lambda x: instrument_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                product_capability,
+                produce_country,
+                location_using,
+                selected_instrument_id,
+            ]
+
+            submit_form(
+                table_name='intrument_infor',
+                columns=[
+                    'Product_capability',
+                    'Produce_Country',
+                    'Location_using',
+                    'idMetrologyIntrument'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_instrument_detail_repair_form():
+    st.title("Submit Instrument Detail for Repair")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    metrology_instrument_data = db_helper.fetch_data('metrology_intrument', ['idMetrologyIntrument'])
+    repair_license_data = db_helper.fetch_data('applic_license_repair_metrology', ['licenserepair_metrologyId'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    instrument_options = {row[0]: f"Instrument ID: {row[0]}" for row in metrology_instrument_data}
+    repair_options = {row[0]: f"Repair License ID: {row[0]}" for row in repair_license_data}
+
+    with st.form(key='instrument_detail_repair_form'):
+        name_metrology_list = st.text_input("Name of Metrology List")
+        quantity = st.text_input("Quantity")
+        code_number = st.text_input("Code Number")
+        condition = st.text_input("Condition")
+        description_technical_specifications = st.text_area("Technical Specifications Description")
+
+        # Dropdowns for selecting foreign keys
+        selected_repair_id = st.selectbox("Select Repair License", options=list(repair_options.keys()), format_func=lambda x: repair_options[x])
+        selected_instrument_id = st.selectbox("Select Metrology Instrument", options=list(instrument_options.keys()), format_func=lambda x: instrument_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                name_metrology_list,
+                quantity,
+                code_number,
+                condition,
+                description_technical_specifications,
+                selected_repair_id,
+                selected_instrument_id
+            ]
+
+            submit_form(
+                table_name='intrument_detail_repair',
+                columns=[
+                    'NameMetrologylist',
+                    'Quantity',
+                    'Code_number',
+                    'Condition_Company',
+                    'Description_Technical',
+                    'licenserepair_metrologyId',
+                    'idMetrologyIntrument'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_result_of_calibration_form():
+    st.title("Submit Result of Calibration")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    product_data = db_helper.fetch_data('product', ['ProductID', 'ProductName'])
+    metrology_instrument_data = db_helper.fetch_data('metrology_intrument', ['idMetrologyIntrument'])
+    instrument_detail_repair_data = db_helper.fetch_data('intrument_detail_repair', ['idIntrumentDetailforRepair'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    product_options = {row[0]: row[1] for row in product_data}
+    instrument_options = {row[0]: f"Instrument ID: {row[0]}" for row in metrology_instrument_data}
+    detail_repair_options = {row[0]: f"Repair Detail ID: {row[0]}" for row in instrument_detail_repair_data}
+
+    with st.form(key='result_of_calibration_form'):
+        model = st.text_input("Model")
+        method_calibration = st.text_input("Method of Calibration")
+        accept_date = st.date_input("Accept Date")
+        date_calibration = st.date_input("Date of Calibration",min_value=datetime(1990,1,1))
+        date_recalibration = st.date_input("Date of Recalibration",min_value=datetime(1990,1,1))
+
+        # Dropdowns for selecting foreign keys
+        selected_product_id = st.selectbox("Select Product", options=list(product_options.keys()), format_func=lambda x: product_options[x])
+        selected_instrument_id = st.selectbox("Select Metrology Instrument", options=list(instrument_options.keys()), format_func=lambda x: instrument_options[x])
+        selected_detail_repair_id = st.selectbox("Select Instrument Detail for Repair", options=list(detail_repair_options.keys()), format_func=lambda x: detail_repair_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                model,
+                method_calibration,
+                accept_date,
+                date_calibration,
+                date_recalibration,
+                selected_product_id,
+                selected_instrument_id,
+                selected_detail_repair_id
+            ]
+
+            submit_form(
+                table_name='result_of_calibration',
+                columns=[
+                    'Model',
+                    'Method_calibration',
+                    'accept_date',
+                    'date_calibration',
+                    'date_recalibration',
+                    'ProductID',
+                    'idMetrologyIntrument',
+                    'idIntrumentDetailforRepair'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_business_infor_form():
+    st.title("Submit Business Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    instrument_infor_data = db_helper.fetch_data('intrument_infor', ['idIntrumentInfor'])
+    license_repair_data = db_helper.fetch_data('applic_license_repair_metrology', ['licenserepair_metrologyId'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    instrument_infor_options = {row[0]: f"Instrument Information ID: {row[0]}" for row in instrument_infor_data}
+    license_repair_options = {row[0]: f"License Repair ID: {row[0]}" for row in license_repair_data}
+
+    with st.form(key='business_infor_form'):
+        type_business = st.text_input("Type of Business")
+        business_characteristics = st.text_area("Business Characteristics")
+        initial_capital = st.text_input("Initial Capital")
+        business_location_size = st.text_input("Business Location Size")
+
+        # Dropdowns for selecting foreign keys
+        selected_instrument_infor_id = st.selectbox("Select Instrument Information", options=list(instrument_infor_options.keys()), format_func=lambda x: instrument_infor_options[x])
+        selected_license_repair_id = st.selectbox("Select License Repair", options=list(license_repair_options.keys()), format_func=lambda x: license_repair_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                type_business,
+                business_characteristics,
+                initial_capital,
+                business_location_size,
+                selected_instrument_infor_id,
+                selected_license_repair_id
+            ]
+
+            submit_form(
+                table_name='business_infor',
+                columns=[
+                    'Type_Business',
+                    'Business_Characteristics',
+                    'Initial_Capital',
+                    'Business_Location_size',
+                    'idIntrumentInfor',
+                    'licenserepair_metrologyId'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_workforce_form():
+    st.title("Submit Workforce Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    business_infor_data = db_helper.fetch_data('business_infor', ['idBusinessInfor'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    business_infor_options = {row[0]: f"Business Information ID: {row[0]}" for row in business_infor_data}
+
+    with st.form(key='workforce_form'):
+        technicians = st.text_input("Technicians")
+        total_workforce = st.text_input("Total Workforce")
+
+        # Dropdown for selecting Business Information ID
+        selected_business_infor_id = st.selectbox("Select Business Information", options=list(business_infor_options.keys()), format_func=lambda x: business_infor_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                technicians,
+                total_workforce,
+                selected_business_infor_id
+            ]
+
+            submit_form(
+                table_name='workforce',
+                columns=[
+                    'Techniicians',
+                    'Total_workforce',
+                    'idBusinessInfor'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_family_infor_form():
+    st.title("Submit Family Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    address_data = db_helper.fetch_data('address', ['addressID', 'OfficeAddress'])
+    certificate_recognition_data = db_helper.fetch_data('applic_certific_recognition_internal_indu', ['idApplicationCertificateRecognitionInternal'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    address_options = {row[0]: f"Address ID: {row[0]} - {row[1]}" for row in address_data}
+    certificate_recognition_options = {row[0]: f"Certificate Recognition Internal ID: {row[0]}" for row in certificate_recognition_data}
+
+    with st.form(key='family_infor_form'):
+        name_of_spouse = st.text_input("Name of Husband or Wife")
+        date_of_birth = st.date_input("Date of Birth",min_value=datetime(1990,1,1))
+        number_of_children = st.number_input("Number of Daughters and Sons", min_value=0, step=1)
+        occupation = st.text_input("Occupation")
+
+        # Dropdown for selecting Address ID and Application Certificate Recognition Internal ID
+        selected_address_id = st.selectbox("Select Address", options=list(address_options.keys()), format_func=lambda x: address_options[x])
+        selected_certificate_recognition_id = st.selectbox("Select Application Certificate Recognition Internal", options=list(certificate_recognition_options.keys()), format_func=lambda x: certificate_recognition_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                name_of_spouse,
+                date_of_birth,
+                number_of_children,
+                occupation,
+                selected_address_id,
+                selected_certificate_recognition_id
+            ]
+
+            submit_form(
+                table_name='family_infor',
+                columns=[
+                    'name_of_husband_or_wife',
+                    'bod',
+                    'number_of_daughter_and_son',
+                    'occupation',
+                    'addressID',
+                    'idApplicationCertificateRecognitionInternal'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_background_application_form():
+    st.title("Submit Background Application Information")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    family_info_data = db_helper.fetch_data('family_infor', ['idfamilyInfor', 'name_of_husband_or_wife'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    family_info_options = {row[0]: f"Family Info ID: {row[0]} - {row[1]}" for row in family_info_data}
+
+    with st.form(key='background_application_form'):
+        language = st.text_input("Language")
+        education_level = st.text_input("Education Level")
+        any_training = st.text_input("Any Training")
+        work_experience = st.text_area("Work Experience")
+        background_application_col = st.text_area("Additional Background Information")
+
+        # Dropdown for selecting Family Information ID
+        selected_family_info_id = st.selectbox("Select Family Information", options=list(family_info_options.keys()), format_func=lambda x: family_info_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                language,
+                education_level,
+                any_training,
+                work_experience,
+                background_application_col,
+                selected_family_info_id
+            ]
+
+            submit_form(
+                table_name='background_application',
+                columns=[
+                    'language',
+                    'education_level',
+                    'any_training',
+                    'work_experience',
+                    'background_applicationcol',
+                    'idfamilyInfor'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_metrology_calibration_form():
+    st.title("Submit Metrology Calibration Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    application_data = db_helper.fetch_data('applic_calibration_metrology', ['ApplicationMetrologyID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    application_options = {row[0]: f"Application ID: {row[0]}" for row in application_data}
+
+    with st.form(key='doc_applic_metrology_calibration_form'):
+        # File uploaders for each document
+        statute_technical = st.file_uploader("Statute Technical", type=['pdf', 'jpg', 'png'])
+        transfer_letter = st.file_uploader("Transfer Letter", type=['pdf', 'jpg', 'png'])
+        id_passport_card = st.file_uploader("ID Passport Card", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Application Metrology ID
+        selected_application_id = st.selectbox("Select Application Metrology", options=list(application_options.keys()), format_func=lambda x: application_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                statute_technical.read() if statute_technical else None,
+                transfer_letter.read() if transfer_letter else None,
+                id_passport_card.read() if id_passport_card else None,
+                selected_application_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_metrology_calibration',
+                columns=[
+                    'Statute_technical',
+                    'Transfer_latter',
+                    'ID_passport_card',
+                    'ApplicationMetrologyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_metro_calibra_second_form():
+    st.title("Submit Second Metrology Calibration Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    application_data = db_helper.fetch_data('applic_calibration_metrology', ['ApplicationMetrologyID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    application_options = {row[0]: f"Application ID: {row[0]}" for row in application_data}
+
+    with st.form(key='doc_applic_metro_calibra_second_form'):
+        # File uploaders for each document
+        expired_metrology_certificate = st.file_uploader("Expired Metrology Certificate", type=['pdf', 'jpg', 'png'])
+        photograph_4x6cm = st.file_uploader("4x6 cm Photograph", type=['jpg', 'png'])
+        id_passport_card = st.file_uploader("ID Passport Card", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Application Metrology ID
+        selected_application_id = st.selectbox("Select Application Metrology", options=list(application_options.keys()), format_func=lambda x: application_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                expired_metrology_certificate.read() if expired_metrology_certificate else None,
+                photograph_4x6cm.read() if photograph_4x6cm else None,
+                id_passport_card.read() if id_passport_card else None,
+                selected_application_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_metro_calibra_second',
+                columns=[
+                    'Expired_metrology_certificate',
+                    'Photograph4x6cm',
+                    'ID_passport_card',
+                    'ApplicationMetrologyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_license_repair_metrology_form():
+    st.title("Submit License Repair Metrology Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    license_repair_data = db_helper.fetch_data('applic_license_repair_metrology', ['licenserepair_metrologyId'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    repair_license_options = {row[0]: f"License Repair ID: {row[0]}" for row in license_repair_data}
+
+    with st.form(key='doc_applic_license_repair_metrology_form'):
+        # File uploaders for each document
+        expired_license_repair = st.file_uploader("Expired License Repair Metrology Equipment", type=['pdf', 'jpg', 'png'])
+        metrology_registration_certificate = st.file_uploader("Metrology Registration Certificate", type=['pdf', 'jpg', 'png'])
+        specialization_certificate = st.file_uploader("Certificate or Proof of Specialization of Applicant", type=['pdf', 'jpg', 'png'])
+        technical_drawings = st.file_uploader("Technical Drawings of Requested Metrology Equipment", type=['pdf', 'jpg', 'png'])
+        identification_card = st.file_uploader("Identification Card", type=['pdf', 'jpg', 'png'])
+        transfer_rights_letter = st.file_uploader("Transfer Rights Letter", type=['pdf', 'jpg', 'png'])
+        statute_company = st.file_uploader("Statute Company", type=['pdf', 'jpg', 'png'])
+        photograph_4x6 = st.file_uploader("4x6 Photograph", type=['jpg', 'png'])
+
+        # Dropdown for selecting License Repair ID
+        selected_license_repair_id = st.selectbox("Select License Repair", options=list(repair_license_options.keys()), format_func=lambda x: repair_license_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                expired_license_repair.read() if expired_license_repair else None,
+                metrology_registration_certificate.read() if metrology_registration_certificate else None,
+                specialization_certificate.read() if specialization_certificate else None,
+                technical_drawings.read() if technical_drawings else None,
+                identification_card.read() if identification_card else None,
+                transfer_rights_letter.read() if transfer_rights_letter else None,
+                statute_company.read() if statute_company else None,
+                photograph_4x6.read() if photograph_4x6 else None,
+                selected_license_repair_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_license_repair_metrology',
+                columns=[
+                    'ExpiredLicenseRepairMetrologyEquipment',
+                    'MetrologyRegistrationCertificate',
+                    'CertificateOrProofSpecializationofApplicant',
+                    'TechnicalDrawingsfRequestedMetrologyEquipment',
+                    'IdentificationCard',
+                    'TransferRightsLetter',
+                    'Statute_company',
+                    'Photograph4x6',
+                    'licenserepair_metrologyId'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_metrology_verify_form():
+    st.title("Submit Metrology Verification Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    verification_data = db_helper.fetch_data('applic_metro_verify', ['ApplicationMetrologyVerifyID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    verification_options = {row[0]: f"Verification Application ID: {row[0]}" for row in verification_data}
+
+    with st.form(key='doc_applic_metrology_verify_form'):
+        # File uploaders for each document
+        transfer_letter = st.file_uploader("Transfer Letter", type=['pdf', 'jpg', 'png'])
+        id_passport_card = st.file_uploader("ID Passport Card", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Application Metrology Verify ID
+        selected_verification_id = st.selectbox("Select Application Metrology Verify", options=list(verification_options.keys()), format_func=lambda x: verification_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                transfer_letter.read() if transfer_letter else None,
+                id_passport_card.read() if id_passport_card else None,
+                selected_verification_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_metrology_verify',
+                columns=[
+                    'Transfer_latter',
+                    'ID_passport_card',
+                    'ApplicationMetrologyVerifyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_metro_verify_second_form():
+    st.title("Submit Second Metrology Verification Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    verification_data = db_helper.fetch_data('applic_metro_verify', ['ApplicationMetrologyVerifyID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    verification_options = {row[0]: f"Verification Application ID: {row[0]}" for row in verification_data}
+
+    with st.form(key='doc_applic_metro_verify_second_form'):
+        # File uploader for initial verification document
+        initial_verification = st.file_uploader("Initial Verification Previous Usage", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Application Metrology Verify ID
+        selected_verification_id = st.selectbox("Select Application Metrology Verify", options=list(verification_options.keys()), format_func=lambda x: verification_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                initial_verification.read() if initial_verification else None,
+                selected_verification_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_metro_verify_second',
+                columns=[
+                    'Initial_verification_previous_usage',
+                    'ApplicationMetrologyVerifyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_metro_verify_third_form():
+    st.title("Submit Third Metrology Verification Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    verification_data = db_helper.fetch_data('applic_metro_verify', ['ApplicationMetrologyVerifyID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    verification_options = {row[0]: f"Verification Application ID: {row[0]}" for row in verification_data}
+
+    with st.form(key='doc_applic_metro_verify_third_form'):
+        # File uploaders for documents
+        info_image_imported = st.file_uploader("Information Image of Imported Package", type=['pdf', 'jpg', 'png'])
+        technical_doc_imported = st.file_uploader("Technical Document of Imported Package", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Application Metrology Verify ID
+        selected_verification_id = st.selectbox("Select Application Metrology Verify", options=list(verification_options.keys()), format_func=lambda x: verification_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                info_image_imported.read() if info_image_imported else None,
+                technical_doc_imported.read() if technical_doc_imported else None,
+                selected_verification_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_metro_verifythird',
+                columns=[
+                    'Infor_image_imported_packaged',
+                    'Doc_technical_imported_packaged',
+                    'ApplicationMetrologyVerifyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_appli_metro_verify_import_forth_form():
+    st.title("Submit Fourth Metrology Verification Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    verification_data = db_helper.fetch_data('applic_metro_verify', ['ApplicationMetrologyVerifyID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    verification_options = {row[0]: f"Verification Application ID: {row[0]}" for row in verification_data}
+
+    with st.form(key='doc_appli_metro_verify_import_forth_form'):
+        # File uploader for technical document
+        technical_doc_imported = st.file_uploader("Technical Document of Imported Package", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Application Metrology Verify ID
+        selected_verification_id = st.selectbox("Select Application Metrology Verify", options=list(verification_options.keys()), format_func=lambda x: verification_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                technical_doc_imported.read() if technical_doc_imported else None,
+                selected_verification_id
+            ]
+
+            submit_form(
+                table_name='doc_appli_metro_verify_importforth',
+                columns=[
+                    'Doc_technical_imported_packaged',
+                    'ApplicationMetrologyVerifyID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applc_certific_recogin_form():
+    st.title("Submit Certificate Recognition Document Application")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    recognition_data = db_helper.fetch_data('applic_certific_recognition_internal_indu', ['idApplicationCertificateRecognitionInternal'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    recognition_options = {row[0]: f"Recognition Application ID: {row[0]}" for row in recognition_data}
+
+    with st.form(key='doc_applc_certific_recogin_form'):
+        # File uploaders for each document
+        transfer_letter = st.file_uploader("Transfer Letter", type=['pdf', 'jpg', 'png'])
+        passport_card = st.file_uploader("ID Passport Card", type=['pdf', 'jpg', 'png'])
+        certificate_recognition = st.file_uploader("Certificate of Metrology Expertise Recognition", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Application Certificate Recognition Internal ID
+        selected_recognition_id = st.selectbox("Select Application Certificate Recognition Internal", options=list(recognition_options.keys()), format_func=lambda x: recognition_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                transfer_letter.read() if transfer_letter else None,
+                passport_card.read() if passport_card else None,
+                certificate_recognition.read() if certificate_recognition else None,
+                selected_recognition_id
+            ]
+
+            submit_form(
+                table_name='doc_applc_certific_recogin',
+                columns=[
+                    'Transfer_latter',
+                    'ID_passport_card',
+                    'Certificate_metrology_expertise_recognition',
+                    'idApplicationCertificateRecognitionInternal'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_certif_recog_expertise_form():
+    st.title("Submit Document for Certification Recognition Expertise")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    recognition_data = db_helper.fetch_data('applic_certific_recognition_internal_indu', ['idApplicationCertificateRecognitionInternal'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    recognition_options = {row[0]: f"Recognition ID: {row[0]}" for row in recognition_data}
+
+    with st.form(key='doc_applic_certif_recog_expertise_form'):
+        training_certificate = st.file_uploader("Training Certificate", type=['pdf', 'jpg', 'png'])
+        identification_card = st.file_uploader("Identification Card", type=['pdf', 'jpg', 'png'])
+        photo_4x6 = st.file_uploader("4x6 Photo", type=['jpg', 'png'])
+
+        # Dropdown for selecting Application Certificate Recognition Internal ID
+        selected_recognition_id = st.selectbox("Select Recognition Application", options=list(recognition_options.keys()), format_func=lambda x: recognition_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                training_certificate.read() if training_certificate else None,
+                identification_card.read() if identification_card else None,
+                photo_4x6.read() if photo_4x6 else None,
+                selected_recognition_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_certif_recog_expertise',
+                columns=[
+                    'TrainingCertificate',
+                    'IdentificationCard',
+                    'Photo4x6',
+                    'idApplicationCertificateRecognitionInternal'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_protoapprove_certificate_form():
+    st.title("Submit Document for Prototype Approval Certificate")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    prototype_data = db_helper.fetch_data('applic_prototype_approval_certificate', ['Applicatio_Prototype_Approval_CertificateID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    prototype_options = {row[0]: f"Prototype Approval ID: {row[0]}" for row in prototype_data}
+
+    with st.form(key='doc_applic_protoapprove_certificate_form'):
+        statute_technical = st.file_uploader("Statute Technical", type=['pdf', 'jpg', 'png'])
+        transfer_letter = st.file_uploader("Transfer Letter", type=['pdf', 'jpg', 'png'])
+        id_passport_card = st.file_uploader("ID Passport Card", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Prototype Approval Certificate ID
+        selected_prototype_id = st.selectbox("Select Prototype Approval", options=list(prototype_options.keys()), format_func=lambda x: prototype_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                statute_technical.read() if statute_technical else None,
+                transfer_letter.read() if transfer_letter else None,
+                id_passport_card.read() if id_passport_card else None,
+                selected_prototype_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_protoapprove_certificate',
+                columns=[
+                    'Statute_technical',
+                    'Transfer_latter',
+                    'ID_passport_card',
+                    'Applicatio_Prototype_Approval_CertificateID'
+                ],
+                form_inputs=form_inputs
+            )
+
+def submit_doc_applic_importper_metroequi_form():
+    st.title("Submit Document for Import Permission of Metrology Equipment")
+
+    db_helper = DatabaseHelper()
+
+    # Fetch necessary data for dropdowns
+    import_permission_data = db_helper.fetch_data('applic_checking_importpermmetro_equipment', ['ApplicationImportPermissionMetrologyEquipmentID'])
+
+    db_helper.close_connection()
+
+    # Prepare dropdown options
+    import_permission_options = {row[0]: f"Import Permission ID: {row[0]}" for row in import_permission_data}
+
+    with st.form(key='doc_applic_importper_metroequi_form'):
+        extract_of_information_picture = st.file_uploader("Extract of Information Picture", type=['pdf', 'jpg', 'png'])
+        identification_card = st.file_uploader("Identification Card", type=['pdf', 'jpg', 'png'])
+        transfer_letter = st.file_uploader("Transfer Letter", type=['pdf', 'jpg', 'png'])
+
+        # Dropdown for selecting Import Permission ID
+        selected_import_permission_id = st.selectbox("Select Import Permission", options=list(import_permission_options.keys()), format_func=lambda x: import_permission_options[x])
+
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            form_inputs = [
+                extract_of_information_picture.read() if extract_of_information_picture else None,
+                identification_card.read() if identification_card else None,
+                transfer_letter.read() if transfer_letter else None,
+                selected_import_permission_id
+            ]
+
+            submit_form(
+                table_name='doc_applic_importper_metroequi',
+                columns=[
+                    'Extract_of_Information_Picture',
+                    'Identification_Card',
+                    'Transfer_latter',
+                    'ApplicationImportPermissionMetrologyEquipmentID'
                 ],
                 form_inputs=form_inputs
             )
