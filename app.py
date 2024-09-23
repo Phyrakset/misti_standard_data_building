@@ -177,7 +177,7 @@ form_mapping = {
     "Submit Information for Raw Material (ដាក់ស្នើព័ត៌មានសម្ភារដើម)": submit_infor_raw_material_form,
 
     ## Section WSMS Indicator
-    "Submit Raw Water Source (ដាក់ស្នើប្រភពទឹកធម្មតា)": submit_raw_water_source_form,
+    "Submit Raw Water Source (ដាក់ស្នើទម្រង់ប្រភពទឹកឆៅ)": submit_raw_water_source_form,
     "Submit Human Resources Information (ដាក់ស្នើព័ត៌មានធនធានមនុស្ស)": submit_human_resources_form,
     "Submit Treatment Plan (ដាក់ស្នើផែនការព្យាបាល)": submit_treatment_plant_form,
     "Submit Water Quality Information (ដាក់ស្នើព័ត៌មានគុណភាពទឹក)": submit_water_quality_form,

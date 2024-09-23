@@ -24,8 +24,8 @@ def submit_form(table_name, columns, form_inputs, return_id=True):
         st.error(message)
 
 def submit_type_of_application_form():
-    st.title("Submit Type of Application / ដាក់ស្នើប្រភេទនៃពាក្យសុំ")
-    
+
+
     with st.form(key='type_of_application_form'):
         title = st.text_input("Title / ចំណងជើង", placeholder="Enter the application title / បញ្ចូលចំណងជើងនៃពាក្យសុំ")
         description = st.text_area("Description / ការពិពណ៌នា", placeholder="Enter the description (optional) / បញ្ចូលការពិពណ៌នា (ស្រេចចិត្ត)")
@@ -39,7 +39,6 @@ def submit_type_of_application_form():
             )
 
 def submit_raw_water_source_form():
-    st.title("Submit Raw Water Source Form / ដាក់ស្នើទម្រង់ប្រភពទឹកឆៅ")
     
     with st.form(key='raw_water_source_form'):
         code = st.number_input("Code / លេខកូដ", min_value=1)
@@ -69,8 +68,7 @@ def submit_raw_water_source_form():
             )
 
 def submit_for_of_oficial_user_only_form():
-    st.title("Submit Official User Data Form / ដាក់ស្នើទម្រង់ទិន្នន័យអ្នកប្រើប្រាស់ផ្លូវការ")
-    
+
     with st.form(key='for_of_oficial_user_only_form'):
         safety_mark_number = st.text_input("Safety Mark Number / លេខសម្គាល់សុវត្ថិភាព")
         officer_number = st.text_input("Officer Number / លេខមន្រ្តី")
@@ -84,8 +82,7 @@ def submit_for_of_oficial_user_only_form():
             )
 
 def submit_company_form():
-    st.title("Submit Company Form / ដាក់ស្នើទម្រង់ក្រុមហ៊ុន")
-    
+
     db_helper = DatabaseHelper()
     type_of_application_data = db_helper.fetch_data('type_of_application', ['TypeOfApplicationID', 'Title'])
     db_helper.close_connection()
@@ -115,8 +112,7 @@ def submit_company_form():
             )
 
 def submit_company_signature_form():
-    st.title("Submit Company Signature Form / ដាក់ស្នើទម្រង់ហត្ថលេខាក្រុមហ៊ុន")
-    
+
     db_helper = DatabaseHelper()
     company_list = db_helper.fetch_data('company', ['CompanyID', 'Name'])
     db_helper.close_connection()
@@ -141,8 +137,7 @@ def submit_company_signature_form():
             )
 
 def submit_applicant_form():
-    st.title("Submit Applicant Form / ដាក់ស្នើទម្រង់អ្នកដាក់ពាក្យ")
-
+  
     db_helper = DatabaseHelper()
     
     # Fetch necessary data for dropdowns
@@ -195,8 +190,7 @@ def submit_applicant_form():
             )
 
 def submit_personal_info_form():
-    st.title("Submit Personal Information for Applicant / ដាក់ស្នើព័ត៌មានផ្ទាល់ខ្លួនសម្រាប់អ្នកដាក់ពាក្យ")
-    
+  
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -237,8 +231,7 @@ def submit_personal_info_form():
             )
 
 def submit_id_card_or_passport_form():
-    st.title("Submit ID Card or Passport Information / ដាក់ស្នើព័ត៌មានអត្តសញ្ញាណប័ណ្ណ ឬ លិខិតឆ្លងដែន")
-    
+
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -273,8 +266,7 @@ def submit_id_card_or_passport_form():
             )
 
 def submit_address_form():
-    st.title("Submit Address Information / ដាក់ស្នើព័ត៌មានអាសយដ្ឋាន")
-    
+
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -316,8 +308,7 @@ def submit_address_form():
             )
 
 def submit_human_resources_form():
-    st.title("Submit Human Resources Information / ដាក់ស្នើព័ត៌មានធនធានមនុស្ស")
-    
+ 
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -361,8 +352,7 @@ def submit_human_resources_form():
             )
 
 def submit_treatment_plant_form():
-    st.title("Submit Treatment Plant Information / ដាក់ស្នើព័ត៌មានរោងចក្រកែច្នៃទឹក")
-    
+ 
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -419,8 +409,7 @@ def submit_treatment_plant_form():
             )
 
 def submit_water_quality_form():
-    st.title("Submit Water Quality Information / ដាក់ស្នើព័ត៌មានគុណភាពទឹក")
-    
+ 
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -489,7 +478,6 @@ def submit_water_quality_form():
             )
 
 def submit_commercial_form():
-    st.title("បញ្ជូនព័ត៌មានពាណិជ្ជកម្ម | Submit Commercial Information")
     db_helper = DatabaseHelper()
     # Fetch necessary data for dropdowns
     treatment_plants = db_helper.fetch_data('treatment_plant', ['idTreatmentPlant', 'TreatmentPlant_name'])
@@ -564,7 +552,6 @@ def submit_commercial_form():
             )
     
 def submit_financial_form():
-    st.title("បញ្ជូនព័ត៌មានហិរញ្ញវត្ថុ | Submit Financial Information")
     
     db_helper = DatabaseHelper()
 
@@ -647,7 +634,6 @@ def submit_financial_form():
             )
 
 def submit_distribution_network_form():
-    st.title("Submit Distribution Network Information / ដាក់ស្នើព័ត៌មានបណ្តាញចែកចាយ")
     
     db_helper = DatabaseHelper()
 
@@ -694,7 +680,6 @@ def submit_distribution_network_form():
             )
 
 def submit_office_contact_form():
-    st.title("Submit Office Contact Information / ដាក់ស្នើព័ត៌មានទំនាក់ទំនងការិយាល័យ")
     
     db_helper = DatabaseHelper()
 
@@ -735,7 +720,6 @@ def submit_office_contact_form():
             )
 
 def submit_factory_form():
-    st.title("Submit Factory Information / ដាក់ស្នើព័ត៌មានរោងចក្រ")
     
     db_helper = DatabaseHelper()
 
@@ -768,7 +752,6 @@ def submit_factory_form():
             )
 
 def submit_product_form():
-    st.title("Submit Product Information / ដាក់ស្នើព័ត៌មានផលិតផល")
     
     db_helper = DatabaseHelper()
 
@@ -806,7 +789,6 @@ def submit_product_form():
             )
 
 def submit_license_form():
-    st.title("Submit License Information / ដាក់ស្នើព័ត៌មានអាជ្ញាប័ណ្ណ")
     
     db_helper = DatabaseHelper()
 
@@ -844,7 +826,6 @@ def submit_license_form():
             )
 
 def submit_factory_inspection_report_form():
-    st.title("Submit Factory Inspection Report / ដាក់ស្នើរបាយការណ៍ត្រួតពិនិត្យរោងចក្រ")
 
     db_helper = DatabaseHelper()
 
@@ -881,7 +862,6 @@ def submit_factory_inspection_report_form():
             )
 
 def submit_certificate_of_conformity_form():
-    st.title("Submit Certificate of Conformity Form / ដាក់ស្នើបែបបទវិញ្ញាបនបត្រនៃការអនុលោម")
 
     db_helper = DatabaseHelper()
 
@@ -921,7 +901,6 @@ def submit_certificate_of_conformity_form():
             )
 
 def submit_test_report_form():
-    st.title("Submit Test Report Form / ដាក់ស្នើបែបបទរបាយការណ៍សាកល្បង")
 
     db_helper = DatabaseHelper()
 
@@ -962,7 +941,6 @@ def submit_test_report_form():
             )
 
 def submit_patent_card_form():
-    st.title("Submit Patent Card Form / ដាក់ស្នើបែបបទប័ណ្ណប៉ាតង់")
 
     db_helper = DatabaseHelper()
 
@@ -1002,7 +980,6 @@ def submit_patent_card_form():
             )
 
 def submit_doc_pro_or_spare_part_pro_registration_form():
-    st.title("Submit Document for Product or Spare Part Registration Form / ដាក់ស្នើឯកសារសម្រាប់ការចុះបញ្ជីផលិតផល ឬ ផ្នែកបន្លាស់")
 
     db_helper = DatabaseHelper()
 
@@ -1062,7 +1039,6 @@ def submit_doc_pro_or_spare_part_pro_registration_form():
             )
 
 def submit_doc_electri_and_electro_pro_registration_form():
-    st.title("Submit Document for Electrical and Electronic Product Registration Form / ដាក់ស្នើឯកសារសម្រាប់ការចុះបញ្ជីផលិតផលអគ្គិសនី និងអេឡិចត្រូនិច")
 
     db_helper = DatabaseHelper()
 
@@ -1096,7 +1072,7 @@ def submit_doc_electri_and_electro_pro_registration_form():
             )
 
 def submit_infor_detail_of_modification_form():
-    st.title("Submit Information Detail of Modification for Part or Electrical and Electronic Product / ដាក់ស្នើព័ត៌មានលម្អិតនៃការកែប្រែសម្រាប់ផ្នែក ឬផលិតផលអគ្គិសនី និងអេឡិចត្រូនិច")
+    
 
     db_helper = DatabaseHelper()
 
@@ -1140,7 +1116,6 @@ def submit_infor_detail_of_modification_form():
             )
 
 def submit_doc_of_modification_part_pro_form():
-    st.title("បញ្ជូនឯកសារការកែប្រែផលិតផលផ្នែក | Submit Document of Modification for Part Product")
 
     db_helper = DatabaseHelper()
 
@@ -1214,8 +1189,7 @@ def submit_doc_of_modification_part_pro_form():
             )
 
 def submit_doc_of_modification_electri_electro_part_pro_form():
-    st.title("Submit Document of Modification for Electrical and Electro Part Product / ដាក់ស្នើឯកសារកែប្រែសម្រាប់ផលិតផលអគ្គិសនី និងអេឡិចត្រូនិច")
-
+    
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -1271,8 +1245,7 @@ def submit_doc_of_modification_electri_electro_part_pro_form():
             )
 
 def submit_list_chemical_substance_form():
-    st.title("Submit Chemical Substance Information / ដាក់ស្នើព័ត៌មានសារធាតុគីមី")
-
+  
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -1332,7 +1305,6 @@ def submit_list_chemical_substance_form():
             )
 
 def submit_previous_chemical_usage_form():
-    st.title("Submit Previous Chemical Usage Information / ដាក់ស្នើព័ត៌មានការប្រើប្រាស់សារធាតុគីមីមុន")
 
     db_helper = DatabaseHelper()
 
@@ -1373,7 +1345,6 @@ def submit_previous_chemical_usage_form():
             )
 
 def submit_appli_details_chemical_form():
-    st.title("Submit Application Details for Chemical Substance / ដាក់ស្នើព័ត៌មានលម្អិតសម្រាប់សារធាតុគីមី")
 
     db_helper = DatabaseHelper()
 
@@ -1431,7 +1402,6 @@ def submit_appli_details_chemical_form():
             )
 
 def submit_chemical_pro_plan_annual_form():
-    st.title("Submit Chemical Production Plan Annual / ដាក់ស្នើផែនការផលិតសារធាតុគីមីប្រចាំឆ្នាំ")
 
     db_helper = DatabaseHelper()
 
@@ -1471,7 +1441,6 @@ def submit_chemical_pro_plan_annual_form():
             )
 
 def submit_declaration_buyer_importer_form():
-    st.title("Submit Declaration for Buyer/Importer / ដាក់ស្នើការបញ្ជាក់សម្រាប់អ្នកទិញ/អ្នកនាំចូល")
 
     db_helper = DatabaseHelper()
 
@@ -1526,7 +1495,6 @@ def submit_declaration_buyer_importer_form():
             )
 
 def submit_doc_recog_standard_chemical_substance_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់ការស្គាល់សារធាតុគីមីស្តង់ដារ | Submit Document for Recognition of Standard Chemical Substance")
 
     db_helper = DatabaseHelper()
 
@@ -1593,7 +1561,6 @@ def submit_doc_recog_standard_chemical_substance_form():
             )
 
 def submit_pro_registration_license_form():
-    st.title("បញ្ជូនបែបបទចុះបញ្ជីផលិតផល (Submit Product Registration License Form)")
 
     db_helper = DatabaseHelper()
 
@@ -1655,7 +1622,6 @@ def submit_pro_registration_license_form():
             )
 
 def submit_machinery_equipment_in_factory_form():
-    st.title("បញ្ជូនបែបបទឧបករណ៍ម៉ាស៊ីនក្នុងរោងចក្រ (Submit Machinery Equipment in Factory Form)")
 
     db_helper = DatabaseHelper()
 
@@ -1703,7 +1669,6 @@ def submit_machinery_equipment_in_factory_form():
             )
 
 def submit_doc_pro_regis_license_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់អាជ្ញាប័ណ្ណចុះបញ្ជីផលិតផល (Submit Document for Product Registration License Form)")
 
     db_helper = DatabaseHelper()
 
@@ -1757,7 +1722,6 @@ def submit_doc_pro_regis_license_form():
             )
 
 def submit_production_chain_form():
-    st.title("បញ្ជូនបែបបទខ្សែសង្វាក់ផលិតកម្ម (Submit Production Chain Form)")
 
     db_helper = DatabaseHelper()
 
@@ -1813,7 +1777,6 @@ def submit_production_chain_form():
             )
 
 def submit_raw_materials_form():
-    st.title("បញ្ជូនបែបបទសម្ភារៈដើម (Submit Raw Materials Form)")
 
     db_helper = DatabaseHelper()
 
@@ -1864,7 +1827,6 @@ def submit_raw_materials_form():
             )
 
 def submit_doc_restricted_chemicals_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់សារធាតុខ្លាំង | Submit Document for Restricted Chemicals")
 
     db_helper = DatabaseHelper()
 
@@ -1930,8 +1892,7 @@ def submit_doc_restricted_chemicals_form():
             )
 
 def submit_doc_represent_company_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់ក្រុមហ៊ុនតំណាង (អគ្គិសនី, អេឡិចត្រូនិច, ឬគ្រឿងបន្លាស់) (Submit Document for Representative Companies (Electri, Electro, or Spare Part))")
-
+    
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -1985,7 +1946,6 @@ def submit_doc_represent_company_form():
             )
 
 def submit_doc_establishment_factory_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់ការបង្កើតរោងចក្រ (Submit Document for Establishment of Factory)")
 
     db_helper = DatabaseHelper()
 
@@ -2039,7 +1999,6 @@ def submit_doc_establishment_factory_form():
             )
 
 def submit_infor_raw_material_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់សម្ភារៈដើម (Submit Information for Raw Material)")
 
     db_helper = DatabaseHelper()
 
@@ -2091,7 +2050,6 @@ def submit_infor_raw_material_form():
             )
 
 def submit_infor_invest_pro_safety_and_sanitary_system_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់ប្រព័ន្ធសុវត្ថិភាពនិងអនាម័យផលិតកម្ម (Submit Information for Investment Production Safety and Sanitary System)")
 
     db_helper = DatabaseHelper()
 
@@ -2129,7 +2087,6 @@ def submit_infor_invest_pro_safety_and_sanitary_system_form():
             )
 
 def submit_doc_for_inves_project_pro_safety_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់គម្រោងវិនិយោគសុវត្ថិភាពផលិតកម្ម (Submit Document for Investment Project Production Safety)")
 
     db_helper = DatabaseHelper()
 
@@ -2196,7 +2153,6 @@ def submit_doc_for_inves_project_pro_safety_form():
             )
 
 def submit_doc_permit_small_medium_enterprises_handicraft_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់អាជីវកម្មតូចមធ្យមនិងសិប្បកម្ម (Submit Document for Small Medium Enterprises Handicraft Permit)")
 
     db_helper = DatabaseHelper()
 
@@ -2245,8 +2201,7 @@ def submit_doc_permit_small_medium_enterprises_handicraft_form():
             )
 
 def submit_infor_factory_manager_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់អ្នកគ្រប់គ្រងរោងចក្រ (Submit Information for Factory Manager)")
-
+   
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
@@ -2303,7 +2258,6 @@ def submit_infor_factory_manager_form():
             )
 
 def submit_infor_quality_controlprogram_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់កម្មវិធីត្រួតពិនិត្យគុណភាព (Submit Information for Quality Control Program)")
 
     db_helper = DatabaseHelper()
 
@@ -2335,7 +2289,6 @@ def submit_infor_quality_controlprogram_form():
             )
 
 def submit_infor_investment_asset_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់ទ្រព្យសកម្មវិនិយោគ (Submit Information for Investment Asset)")
 
     db_helper = DatabaseHelper()
 
@@ -2391,7 +2344,6 @@ def submit_infor_investment_asset_form():
             )
 
 def submit_infor_machinery_facilities_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់គ្រឿងម៉ាស៊ីននិងសម្ភារៈ (Submit Information for Machinery Facilities)")
 
     db_helper = DatabaseHelper()
 
@@ -2441,7 +2393,6 @@ def submit_infor_machinery_facilities_form():
             )
 
 def submit_infor_planed_product_output_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់ផលិតផលដែលបានគ្រោងទុក (Submit Planned Product Output Information)")
 
     db_helper = DatabaseHelper()
 
@@ -2492,7 +2443,6 @@ def submit_infor_planed_product_output_form():
             )
 
 def submit_infor_product_waste_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់កាកសំណល់ផលិតផល (Submit Product Waste Information)")
 
     db_helper = DatabaseHelper()
 
@@ -2529,7 +2479,6 @@ def submit_infor_product_waste_form():
             )
 
 def submit_applic_calibration_metrology_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់ការវាស់វែងនិងការវាស់វែងត្រឹមត្រូវ (Submit Calibration Metrology Application Information)")
 
     db_helper = DatabaseHelper()
 
@@ -2585,7 +2534,6 @@ def submit_applic_calibration_metrology_form():
             )
 
 def submit_doc_applic_metrology_calibration_form():
-    st.title("បញ្ជូនឯកសារសម្រាប់ការវាស់វែងត្រឹមត្រូវ (Submit Metrology Calibration Application Documents)")
 
     db_helper = DatabaseHelper()
 
@@ -2632,7 +2580,6 @@ def submit_doc_applic_metrology_calibration_form():
             )
 
 def submit_applic_license_repair_metrology_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់ការជួសជុលអាជ្ញាប័ណ្ណវាស់វែងត្រឹមត្រូវ (Submit License Repair Metrology Application)")
 
     db_helper = DatabaseHelper()
 
@@ -2688,7 +2635,6 @@ def submit_applic_license_repair_metrology_form():
             )
 
 def submit_applic_metro_verify_form():
-    st.title("បញ្ជូនព័ត៌មានសម្រាប់ការផ្ទៀងផ្ទាត់វាស់វែងត្រឹមត្រូវ (Submit Metrology Verification Application)")
 
     db_helper = DatabaseHelper()
 
@@ -2739,7 +2685,6 @@ def submit_applic_metro_verify_form():
             )
 
 def submit_applic_certific_recog_metro_expertise_form():
-    st.title("បញ្ជូនពាក្យសម្រាប់វិញ្ញាបនបត្រការទទួលស្គាល់ជំនាញវាស់វែងត្រឹមត្រូវ (Submit Application for Certificate Recognition in Metrology Expertise)")
 
     db_helper = DatabaseHelper()
 
@@ -2808,7 +2753,6 @@ def submit_applic_certific_recog_metro_expertise_form():
             )
 
 def submit_applic_checking_importpermmetro_equipment_form():
-    st.title("បញ្ជូនពាក្យសម្រាប់ការត្រួតពិនិត្យការអនុញ្ញាតនាំចូលឧបករណ៍វាស់វែងត្រឹមត្រូវ (Submit Application for Checking Import Permission of Metrology Equipment)")
 
     db_helper = DatabaseHelper()
 
@@ -2859,7 +2803,6 @@ def submit_applic_checking_importpermmetro_equipment_form():
             )
 
 def submit_applic_prototype_approval_certificate_form():
-    st.title("បញ្ជូនពាក្យសម្រាប់វិញ្ញាបនបត្រការអនុម័តគំរូ (Submit Application for Prototype Approval Certificate)")
 
     db_helper = DatabaseHelper()
 
@@ -2910,7 +2853,6 @@ def submit_applic_prototype_approval_certificate_form():
             )
 
 def submit_applic_certific_recognition_internal_indu_form():
-    st.title("បញ្ជូនពាក្យសម្រាប់វិញ្ញាបនបត្រការទទួលស្គាល់ឧស្សាហកម្មក្នុងស្រុក (Submit Application for Internal Industry Certification Recognition)")
 
     db_helper = DatabaseHelper()
 
@@ -2961,7 +2903,6 @@ def submit_applic_certific_recognition_internal_indu_form():
             )
 
 def submit_doc_applic_licese_cam_metrotrand_form():
-    st.title("បញ្ជូនពាក្យសម្រាប់អាជ្ញាប័ណ្ណវាស់វែងនិងស្តង់ដារកម្ពុជា (Submit Application License for Cambodia Metrology and Standards)")
 
     db_helper = DatabaseHelper()
 
@@ -3008,7 +2949,6 @@ def submit_doc_applic_licese_cam_metrotrand_form():
             )
 
 def submit_metrology_instrument_form():
-    st.title("បញ្ជូនព័ត៌មានឧបករណ៍វាស់វែង | Submit Metrology Instrument Information")
 
     db_helper = DatabaseHelper()
 
@@ -3089,7 +3029,6 @@ def submit_metrology_instrument_form():
             )
 
 def submit_certificate_calibration_form():
-    st.title("បញ្ជូនព័ត៌មានវិញ្ញាបនបត្រការវាស់វែងត្រឹមត្រូវ (Submit Calibration Certificate Information)")
 
     db_helper = DatabaseHelper()
 
@@ -3130,7 +3069,6 @@ def submit_certificate_calibration_form():
             )
 
 def submit_instrument_infor_form():
-    st.title("បញ្ជូនព័ត៌មានឧបករណ៍វាស់វែង (Submit Instrument Information)")
 
     db_helper = DatabaseHelper()
 
@@ -3172,7 +3110,6 @@ def submit_instrument_infor_form():
             )
 
 def submit_instrument_detail_repair_form():
-    st.title("បញ្ជូនព័ត៌មានលម្អិតអំពីឧបករណ៍សម្រាប់ជួសជុល (Submit Instrument Detail for Repair)")
 
     db_helper = DatabaseHelper()
 
@@ -3225,7 +3162,6 @@ def submit_instrument_detail_repair_form():
             )
 
 def submit_result_of_calibration_form():
-    st.title("បញ្ជូនលទ្ធផលការវាស់វែងត្រឹមត្រូវ (Submit Result of Calibration)")
 
     db_helper = DatabaseHelper()
 
@@ -3283,7 +3219,6 @@ def submit_result_of_calibration_form():
             )
 
 def submit_business_infor_form():
-    st.title("Submit Business Information (បញ្ជូនព័ត៌មានអាជីវកម្ម)")
 
     db_helper = DatabaseHelper()
 
@@ -3333,7 +3268,6 @@ def submit_business_infor_form():
             )
 
 def submit_workforce_form():
-    st.title("Submit Workforce Information (បញ្ជូនព័ត៌មានកម្លាំងពលកម្ម)")
 
     db_helper = DatabaseHelper()
 
@@ -3372,7 +3306,6 @@ def submit_workforce_form():
             )
 
 def submit_family_infor_form():
-    st.title("Submit Family Information (បញ្ជូនព័ត៌មានគ្រួសារ)")
 
     db_helper = DatabaseHelper()
 
@@ -3422,7 +3355,6 @@ def submit_family_infor_form():
             )
 
 def submit_background_application_form():
-    st.title("Submit Background Application Information (បញ្ជូនព័ត៌មានពាក្យស្នើសុំផ្ទៃខាងក្រោយ)")
 
     db_helper = DatabaseHelper()
 
@@ -3470,7 +3402,6 @@ def submit_background_application_form():
             )
 
 def submit_doc_applic_metrology_calibration_form():
-    st.title("Submit Metrology Calibration Document Application (បញ្ជូនពាក្យឯកសារត្រួតពិនិត្យមាត្រដ្ឋាន)")
 
     db_helper = DatabaseHelper()
 
@@ -3513,7 +3444,6 @@ def submit_doc_applic_metrology_calibration_form():
             )
 
 def submit_doc_applic_metro_calibra_second_form():
-    st.title("Submit Second Metrology Calibration Document Application (បញ្ជូនពាក្យឯកសារត្រួតពិនិត្យមាត្រដ្ឋានលើកទីពីរ)")
 
     db_helper = DatabaseHelper()
 
@@ -3556,7 +3486,6 @@ def submit_doc_applic_metro_calibra_second_form():
             )
 
 def submit_doc_applic_license_repair_metrology_form():
-    st.title("Submit License Repair Metrology Document Application (បញ្ជូនពាក្យឯកសារជួសជុលអាជ្ញាប័ណ្ណមាត្រដ្ឋាន)")
 
     db_helper = DatabaseHelper()
 
@@ -3614,7 +3543,6 @@ def submit_doc_applic_license_repair_metrology_form():
             )
 
 def submit_doc_applic_metrology_verify_form():
-    st.title("Submit Metrology Verification Document Application (បញ្ជូនពាក្យឯកសារត្រួតពិនិត្យមាត្រដ្ឋាន)")
 
     db_helper = DatabaseHelper()
 
@@ -3654,7 +3582,6 @@ def submit_doc_applic_metrology_verify_form():
             )
 
 def submit_doc_applic_metro_verify_second_form():
-    st.title("Submit Second Metrology Verification Document Application (បញ្ជូនពាក្យឯកសារត្រួតពិនិត្យមាត្រដ្ឋានលើកទីពីរ)")
 
     db_helper = DatabaseHelper()
 
@@ -3691,7 +3618,6 @@ def submit_doc_applic_metro_verify_second_form():
             )
 
 def submit_doc_applic_metro_verify_third_form():
-    st.title("Submit Third Metrology Verification Document Application (បញ្ជូនពាក្យឯកសារត្រួតពិនិត្យមាត្រដ្ឋានលើកទីបី)")
 
     db_helper = DatabaseHelper()
 
@@ -3731,7 +3657,6 @@ def submit_doc_applic_metro_verify_third_form():
             )
 
 def submit_doc_appli_metro_verify_import_forth_form():
-    st.title("Submit Fourth Metrology Verification Document Application (បញ្ជូនពាក្យឯកសារត្រួតពិនិត្យមាត្រដ្ឋានលើកទីបួន)")
 
     db_helper = DatabaseHelper()
 
@@ -3768,7 +3693,6 @@ def submit_doc_appli_metro_verify_import_forth_form():
             )
 
 def submit_doc_applc_certific_recogin_form():
-    st.title("Submit Certificate Recognition Document Application (បញ្ជូនពាក្យឯកសារទទួលស្គាល់វិញ្ញាបនបត្រ)")
 
     db_helper = DatabaseHelper()
 
@@ -3811,7 +3735,6 @@ def submit_doc_applc_certific_recogin_form():
             )
 
 def submit_doc_applic_certif_recog_expertise_form():
-    st.title("Submit Document for Certification Recognition Expertise (បញ្ជូនឯកសារសម្រាប់ការទទួលស្គាល់វិញ្ញាបនបត្រ)")
 
     db_helper = DatabaseHelper()
 
@@ -3853,7 +3776,6 @@ def submit_doc_applic_certif_recog_expertise_form():
             )
 
 def submit_doc_applic_protoapprove_certificate_form():
-    st.title("Submit Document for Prototype Approval Certificate (បញ្ជូនឯកសារសម្រាប់វិញ្ញាបនបត្រអនុម័តគំរូ)")
 
     db_helper = DatabaseHelper()
 
@@ -3895,7 +3817,6 @@ def submit_doc_applic_protoapprove_certificate_form():
             )
 
 def submit_doc_applic_importper_metroequi_form():
-    st.title("Submit Document for Import Permission of Metrology Equipment (បញ្ជូនឯកសារសម្រាប់ការអនុញ្ញាតនាំចូលឧបករណ៍មាត្រដ្ឋាន)")
 
     db_helper = DatabaseHelper()
 
