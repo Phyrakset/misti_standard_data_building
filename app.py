@@ -93,7 +93,7 @@ def display_logo_with_name():
     with col2:
      st.markdown(
         """
-        <h2 style='text-align: left;'>ក្រសួងឧស្សាហកម្ម វិទ្យាសាស្រ្ត បច្ចេកវិទ្យា និងវិចិត្រសិល្ប </h2>
+        <h2 style='text-align: left;'>ក្រសួងឧស្សាហកម្ម វិទ្យាសាស្រ្ត បច្ចេកវិទ្យា និងនវានុវត្តន៍ </h2>
         <h3 style='text-align: left;'>Ministry of Industry, Science, Technology, and Innovation</h3>
         """, unsafe_allow_html=True
     )
