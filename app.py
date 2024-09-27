@@ -1,5 +1,25 @@
 import streamlit as st
 from PIL import Image
+from scripts.data_visualization import (# Water Resources
+                                        visualize_outliers_in_abstraction,
+                                        visualize_water_sources_by_availability,
+                                        visualize_abstraction_bar_chart,
+                                        visualize_grouped_abstraction,
+                                        visualize_total_abstraction_capacity,
+                                        # Human Resources
+                                        human_resources_analysis,
+                                        # Treatment Plant
+                                        treatment_plant_visualizations,
+                                        # Water quality
+                                        water_quality_analysis,
+                                        # Commercial
+                                        commercial_analysis,
+                                        # financials
+                                        plot_financial_data,
+                                        # Distribution Nework
+                                        plot_distribution_network_data
+
+                                        )
 from scripts.render_form import (
     submit_type_of_application_form,
     submit_raw_water_source_form,
@@ -189,7 +209,7 @@ form_mapping = {
 # Main function to handle navigation and different sections of the app
 def main():
     st.sidebar.title("Navigation")
-    selection = st.sidebar.radio("Go to", ["Home"]+list(form_mapping.keys()))
+    selection = st.sidebar.radio("Go to", ["Home"] + list(form_mapping.keys()))
 
     if selection == "Home":
         display_logo_with_name()
@@ -197,15 +217,43 @@ def main():
         st.write(
             """
             This platform allows you to manage and submit critical data for various departments under the ministry. 
-            Use the sidebar to navigate through different sections of the app.
+            Use the button below to navigate to the data visualization section.
             """
         )
 
-    else:
+        # Button to navigate to data visualization
+        if st.button("Go to Data Visualization"):
+            # Set session state variable to show visualizations
+            st.session_state.show_visualization = True
+
+    # Check for visualization session state
+    if 'show_visualization' in st.session_state and st.session_state.show_visualization:
+        st.header("Data Visualization")
+        # Add visualizations here
+        visualize_outliers_in_abstraction()
+        visualize_water_sources_by_availability()
+        visualize_abstraction_bar_chart()
+        visualize_grouped_abstraction()
+        visualize_total_abstraction_capacity()
+        human_resources_analysis()  
+        treatment_plant_visualizations() 
+        water_quality_analysis() 
+        commercial_analysis() 
+        plot_financial_data() 
+        plot_distribution_network_data() # Call your other visualization functions here
+
+        # Button to go back to home
+        if st.button("Refresh"):
+            st.session_state.show_visualization = False  # Reset the state
+
+    elif selection in form_mapping:
+        # For other selections, show corresponding content
         st.header(selection)
         # Call the corresponding form function based on the selection
         form_function = form_mapping[selection]
         form_function()
+    else:
+        st.error("Invalid selection!")
 
 # Entry point of the app
 if __name__ == "__main__":

@@ -312,16 +312,15 @@ def submit_human_resources_form():
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
-    raw_water_sources = db_helper.fetch_data('raw_watersource', ['idRawWaterSource', 'RawWaterSource_name'])
+    raw_water_sources = db_helper.fetch_data('raw_watersource', ['idRawWaterSource', 'idRawWaterSource'])
 
     db_helper.close_connection()
     
     # Prepare dropdown options
-    raw_water_options = {row[0]: row[1] for row in raw_water_sources}
+    raw_water_options = {row[0]: row[0] for row in raw_water_sources}
 
     with st.form(key='human_resources_form'):
         code = st.number_input("Code / លេខកូដ", min_value=0, step=1)
-        human_resources_name = st.text_input("Human Resources Name / ឈ្មោះធនធានមនុស្ស")
         total_staff = st.number_input("Total Staff / បុគ្គលិកសរុប", min_value=0, step=1)
         staff_per_1000_subscribers = st.number_input("Staff per 1000 Subscribers / បុគ្គលិកក្នុងមួយពាន់អ្នកជាវ", format="%.2f")
         training_sessions = st.number_input("Training Sessions / វគ្គបណ្តុះបណ្តាល", min_value=0, step=1)
@@ -337,14 +336,14 @@ def submit_human_resources_form():
             organization_chart_blob = organization_chart.read() if organization_chart else None
             
             form_inputs = [
-                code, human_resources_name, total_staff, staff_per_1000_subscribers,
+                code,total_staff, staff_per_1000_subscribers,
                 training_sessions, organization_chart_blob, 
                 selected_raw_water_source_id
             ]
             submit_form(
                 table_name='human_resources',
                 columns=[
-                    'code', 'Humanresources_name', 'total_staff', 'staff_per_1000_subscribers', 
+                    'code','total_staff', 'staff_per_1000_subscribers', 
                     'training_sessions', 'organization_chart', 
                     'idRawWaterSource'
                 ],
@@ -356,16 +355,15 @@ def submit_treatment_plant_form():
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
-    raw_water_sources = db_helper.fetch_data('raw_watersource', ['idRawWaterSource', 'RawWaterSource_name'])
+    raw_water_sources = db_helper.fetch_data('raw_watersource', ['idRawWaterSource', 'idRawWaterSource'])
 
     db_helper.close_connection()
     
     # Prepare dropdown options
-    raw_water_options = {row[0]: row[1] for row in raw_water_sources}
+    raw_water_options = {row[0]: row[0] for row in raw_water_sources}
 
     with st.form(key='treatment_plant_form'):
         code = st.number_input("Code / លេខកូដ", min_value=0, step=1)
-        treatment_plant_name = st.text_input("Treatment Plant Name / ឈ្មោះរោងចក្រកែច្នៃទឹក")
         treatment_losses = st.number_input("Treatment Losses / ការបាត់បង់ក្នុងការកែច្នៃ", format="%.2f")
         pac_consumption = st.number_input("PAC Consumption / ការប្រើប្រាស់ PAC", format="%.2f")
         pac_per_m3_produced = st.number_input("PAC per m³ Produced / PAC ក្នុងមួយម៉ែត្រគូបផលិត", format="%.2f")
@@ -388,7 +386,7 @@ def submit_treatment_plant_form():
         
         if submit_button:
             form_inputs = [
-                code, treatment_plant_name, treatment_losses, pac_consumption,
+                code,treatment_losses, pac_consumption,
                 pac_per_m3_produced, alum_consumption, alum_per_m3_produced,
                 chlorine_consumption, chlorine_per_m3_produced, electricity_consumption,
                 electricity_per_m3_produced, lime_consumption, lime_per_m3_produced,
@@ -398,7 +396,7 @@ def submit_treatment_plant_form():
             submit_form(
                 table_name='treatment_plant',
                 columns=[
-                    'code', 'TreatmentPlant_name', 'treatment_losses', 'pac_consumption',
+                    'code', 'treatment_losses', 'pac_consumption',
                     'pac_per_m3_produced', 'alum_consumption', 'alum_per_m3_produced',
                     'chlorine_consumption', 'chlorine_per_m3_produced', 'electricity_consumption',
                     'electricity_per_m3_produced', 'lime_consumption', 'lime_per_m3_produced',
@@ -413,16 +411,15 @@ def submit_water_quality_form():
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
-    treatment_plants = db_helper.fetch_data('treatment_plant', ['idTreatmentPlant', 'TreatmentPlant_name'])
+    treatment_plants = db_helper.fetch_data('treatment_plant', ['idTreatmentPlant', 'idTreatmentPlant'])
 
     db_helper.close_connection()
     
     # Prepare dropdown options
-    treatment_plant_options = {row[0]: row[1] for row in treatment_plants}
+    treatment_plant_options = {row[0]: row[0] for row in treatment_plants}
 
     with st.form(key='water_quality_form'):
         code = st.number_input("Code / លេខកូដ", min_value=0, step=1)
-        water_quality_name = st.text_input("Water Quality Name / ឈ្មោះគុណភាពទឹក")
         color = st.number_input("Color / ពណ៌", format="%.2f")
         turbidity = st.number_input("Turbidity / ភាពអាប់អួរ", format="%.2f")
         ph_level = st.number_input("pH Level / កម្រិត pH", format="%.2f")
@@ -456,7 +453,7 @@ def submit_water_quality_form():
         
         if submit_button:
             form_inputs = [
-                code, water_quality_name, color, turbidity, ph_level, arsenic_level,
+                code,color, turbidity, ph_level, arsenic_level,
                 total_dissolved_solids, manganese_level, zinc_level, sulfate_level,
                 copper_level, hydrogen_sulfide, hardness, aluminum_level, chloride_level,
                 iron_level, ammonia_level, barium_level, cadmium_level, chromium_level,
@@ -466,7 +463,7 @@ def submit_water_quality_form():
             submit_form(
                 table_name='water_quality',
                 columns=[
-                    'code', 'WaterQuality_name', 'color', 'turbidity', 'ph_level', 
+                    'code','color', 'turbidity', 'ph_level', 
                     'arsenic_level', 'total_dissolved_solids', 'manganese_level',
                     'zinc_level', 'sulfate_level', 'copper_level', 'hydrogen_sulfide',
                     'hardness', 'aluminum_level', 'chloride_level', 'iron_level',
@@ -480,13 +477,12 @@ def submit_water_quality_form():
 def submit_commercial_form():
     db_helper = DatabaseHelper()
     # Fetch necessary data for dropdowns
-    treatment_plants = db_helper.fetch_data('treatment_plant', ['idTreatmentPlant', 'TreatmentPlant_name'])
+    treatment_plants = db_helper.fetch_data('treatment_plant', ['idTreatmentPlant', 'idTreatmentPlant'])
     db_helper.close_connection()
     # Prepare dropdown options
-    treatment_plant_options = {row[0]: row[1] for row in treatment_plants}
+    treatment_plant_options = {row[0]: row[0] for row in treatment_plants}
     with st.form(key='commercial_form'):
         code = st.number_input("កូដ | Code", min_value=0, step=1)
-        commercial_name = st.text_input("ឈ្មោះពាណិជ្ជកម្ម | Commercial Name")
         population_served = st.number_input("ប្រជាជនដែលបានបម្រើ | Population Served", min_value=0)
         service_coverage_license_area = st.number_input("ផ្ទៃដីអាជ្ញាប័ណ្ណសេវាកម្ម (គម²) | Service Coverage License Area (sq km)", format="%.2f")
         service_coverage_network_area = st.number_input("ផ្ទៃដីបណ្តាញសេវាកម្ម (គម²) | Service Coverage Network Area (sq km)", format="%.2f")
@@ -523,7 +519,7 @@ def submit_commercial_form():
         submit_button = st.form_submit_button("បញ្ជូន | Submit")
         if submit_button:
             form_inputs = [
-                code, commercial_name, population_served, service_coverage_license_area,
+                code,population_served, service_coverage_license_area,
                 service_coverage_network_area, water_production, water_sold,
                 water_supplied_without_charge, total_water_consumption, water_losses,
                 non_revenue_water, average_daily_consumption, average_consumption_per_connection,
@@ -537,7 +533,7 @@ def submit_commercial_form():
             submit_form(
                 table_name='commercial',
                 columns=[
-                    'code', 'Commercial_name', 'population_served', 'service_coverage_license_area',
+                    'code', 'population_served', 'service_coverage_license_area',
                     'service_coverage_network_area', 'Water_Production', 'water_sold',
                     'water_supplied_without_charge', 'total_water_consumption', 'water_losses',
                     'non_revenue_water', 'average_daily_consumption', 'average_consumption_per_connection',
@@ -556,16 +552,15 @@ def submit_financial_form():
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
-    commercial_list = db_helper.fetch_data('commercial', ['idCommercial', 'Commercial_name'])
+    commercial_list = db_helper.fetch_data('commercial', ['idCommercial', 'idCommercial'])
 
     db_helper.close_connection()
     
     # Prepare dropdown options
-    commercial_options = {row[0]: row[1] for row in commercial_list}
+    commercial_options = {row[0]: row[0] for row in commercial_list}
 
     with st.form(key='financial_form'):
         code = st.number_input("កូដ | Code", min_value=0, step=1)
-        financial_name = st.text_input("ឈ្មោះហិរញ្ញវត្ថុ | Financial Name")
         cash_from_water_sales = st.number_input("ប្រាក់ពីការលក់ទឹក | Cash From Water Sales", format="%.2f")
         other_cash = st.number_input("ប្រាក់ផ្សេងទៀត | Other Cash", format="%.2f")
         amount_billed_for_water_sales = st.number_input("ចំនួនវិក័យប័ត្រសម្រាប់លក់ទឹក | Amount Billed for Water Sales", format="%.2f")
@@ -605,7 +600,7 @@ def submit_financial_form():
         
         if submit_button:
             form_inputs = [
-                code, financial_name, cash_from_water_sales, other_cash,
+                code,cash_from_water_sales, other_cash,
                 amount_billed_for_water_sales, amount_billed_for_other_services,
                 accounts_receivable, average_tariff, bill_collection_ratio,
                 total_operating_expenses, operating_ratio, production_expenses,
@@ -619,7 +614,7 @@ def submit_financial_form():
             submit_form(
                 table_name='financial',
                 columns=[
-                    'code', 'Financial_name', 'cash_from_water_sales', 'other_cash',
+                    'code', 'cash_from_water_sales', 'other_cash',
                     'amount_billed_for_water_sales', 'amount_billed_for_other_services',
                     'accounts_receivable', 'average_tariff', 'bill_collection_ratio',
                     'total_operating_expenses', 'operating_ratio', 'production_expenses',
@@ -638,16 +633,15 @@ def submit_distribution_network_form():
     db_helper = DatabaseHelper()
 
     # Fetch necessary data for dropdowns
-    commercial_list = db_helper.fetch_data('commercial', ['idCommercial', 'Commercial_name'])
+    commercial_list = db_helper.fetch_data('commercial', ['idCommercial', 'idCommercial'])
 
     db_helper.close_connection()
     
     # Prepare dropdown options
-    commercial_options = {row[0]: row[1] for row in commercial_list}
+    commercial_options = {row[0]: row[0] for row in commercial_list}
 
     with st.form(key='distribution_network_form'):
         code = st.number_input("Code / លេខកូដ", min_value=0, step=1)
-        distribution_network_name = st.text_input("Distribution Network Name / ឈ្មោះបណ្តាញចែកចាយ")
         supply_pressure_end_connection = st.number_input("Supply Pressure at End Connection / សម្ពាធផ្គត់ផ្គង់នៅចំណុចបញ្ចប់", format="%.2f")
         number_of_leaks_repaired = st.number_input("Number of Leaks Repaired / ចំនួនការជួសជុលការជ្រាប", format="%.2f")
         total_length = st.number_input("Total Length (m) / ប្រវែងសរុប (ម៉ែត្រ)", format="%.2f")
@@ -663,7 +657,7 @@ def submit_distribution_network_form():
         
         if submit_button:
             form_inputs = [
-                code, distribution_network_name, supply_pressure_end_connection,
+                code, supply_pressure_end_connection,
                 number_of_leaks_repaired, total_length, transmission_length,
                 distribution_length, storage_capacity, supply_duration,
                 selected_commercial_id
@@ -671,7 +665,7 @@ def submit_distribution_network_form():
             submit_form(
                 table_name='distribution_network',
                 columns=[
-                    'code', 'DistributionNetwork_name', 'Supply_Pressure_end_connection',
+                    'code','Supply_Pressure_end_connection',
                     'Number_leak_repaired', 'total_length', 'transmission_length',
                     'distribution_length', 'Storagecapacity', 'Supply_duration',
                     'idCommercial'
