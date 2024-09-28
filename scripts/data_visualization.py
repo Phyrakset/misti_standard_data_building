@@ -1,5 +1,5 @@
 import streamlit as st
-from config import get_connection
+from config import get_connection,is_cloud_env
 import pandas as pd
 import numpy as np
 import os
@@ -8,21 +8,6 @@ import seaborn as sns
 
 
 
-def fetch_and_save_data(table_name, save_path):
-    conn = get_connection()  # Make sure your local database connection works
-    query = f"SELECT * FROM {table_name};"
-    df = pd.read_sql(query, conn)
-    conn.close()
-    df.to_csv(save_path, index=False)  # Save the data to a CSV file
-    return df
-
-fetch_and_save_data("raw_watersource", "data/raw_watersource.csv")
-fetch_and_save_data("human_resources", "data/human_resources.csv")
-fetch_and_save_data("treatment_plant", "data/treatment_plant.csv")
-fetch_and_save_data("water_quality", "data/water_quality.csv")
-fetch_and_save_data("commercial", "data/commercial.csv")
-fetch_and_save_data("financial", "data/financial.csv")
-fetch_and_save_data("distribution_network", "data/distribution_network.csv")
 
 def fetch_data(table_name):
     # Dictionary to map table names to file paths
@@ -35,6 +20,23 @@ def fetch_data(table_name):
         "financial": "data/financial.csv",
         "distribution_network": "data/distribution_network.csv"
     }
+
+    file_path = table_to_file.get(table_name)
+    
+    if is_cloud_env():
+        if file_path and os.path.exists(file_path):
+            # Load data from the CSV file
+            df = pd.read_csv(file_path)
+            return df
+        else:
+            raise FileNotFoundError(f"File for {table_name} not found.")
+    else:
+        # Local environment: fetch from the database (already working)
+        conn = get_connection()
+        query = f"SELECT * FROM {table_name}"
+        df = pd.read_sql(query, conn)
+        conn.close()
+        return df
 
 
      # Load the data from the CSV file
@@ -1030,7 +1032,7 @@ def introduction():
 def describe_tables():
     st.header("Description of the 7 Tables")
 
-    st.subheader("1. Raw Water Source Table (`data1`)")
+    st.subheader("1. Raw Water Source Table ")
     st.write("""
     - **Columns:**
       - `idRawWaterSource`: Unique identifier for each raw water source.
@@ -1043,7 +1045,7 @@ def describe_tables():
       - `Drawing_Water_Treatment_Plant`: Drawing of the water treatment plant (BLOB).
     """)
 
-    st.subheader("2. Human Resources Table (`data2`)")
+    st.subheader("2. Human Resources Table ")
     st.write("""
     - **Columns:**
       - `idHumanresources`: Unique identifier for each human resource record.
@@ -1055,7 +1057,7 @@ def describe_tables():
       - `idRawWaterSource`: Foreign key linking to the raw water source table.
     """)
 
-    st.subheader("3. Treatment Plant Table (`data3`)")
+    st.subheader("3. Treatment Plant Table ")
     st.write("""
     - **Columns:**
       - `idTreatmentPlant`: Unique identifier for each treatment plant.
@@ -1077,7 +1079,7 @@ def describe_tables():
       - `idRawWaterSource`: Foreign key linking to the raw water source table.
     """)
 
-    st.subheader("4. Water Quality Table (`data4`)")
+    st.subheader("4. Water Quality Table ")
     st.write("""
     - **Columns:**
       - `idWaterQuality`: Unique identifier for each water quality record.
@@ -1110,7 +1112,7 @@ def describe_tables():
       - `idTreatmentPlant`: Foreign key linking to the treatment plant table.
     """)
 
-    st.subheader("5. Commercial Table (`data5`)")
+    st.subheader("5. Commercial Table ")
     st.write("""
     - **Columns:**
       - `idCommercial`: Unique identifier for each commercial record.
@@ -1153,7 +1155,7 @@ def describe_tables():
       - `idTreatmentPlant`: Foreign key linking to the treatment plant table.
     """)
 
-    st.subheader("6. Financial Table (`data6`)")
+    st.subheader("6. Financial Table")
     st.write("""
     - **Columns:**
       - `idFinancial`: Unique identifier for each financial record.
@@ -1176,20 +1178,20 @@ def describe_tables():
       - `accounts_payable`: Accounts payable (in currency units).
     """)
 
-    st.subheader("7. Distribution Network Table (`data7`)")
-st.write("""
-    - **Columns:**
-      - `idDistributionNetwork`: Unique identifier for each distribution network record.
-      - `code`: Code representing the distribution network.
-      - `total_length`: Total length of the distribution network (in kilometers).
-      - `number_of_pipelines`: Total number of pipelines in the network.
-      - `pipeline_diameter`: Diameter of the pipelines (in millimeters).
-      - `pipeline_material`: Material of the pipelines (e.g., PVC, steel).
-      - `number_of_pumping_stations`: Total number of pumping stations in the network.
-      - `number_of_reservoirs`: Total number of reservoirs in the network.
-      - `total_storage_capacity`: Total storage capacity of the reservoirs (in cubic meters).
-      - `average_age_of_pipelines`: Average age of the pipelines (in years).
-      - `leakage_rate`: Leakage rate in the distribution network (in percentage).
-      - `maintenance_costs`: Annual maintenance costs for the distribution network (in currency units).
-      - `idTreatmentPlant`: Foreign key linking to the treatment plant table.
-    """)
+    st.subheader("7. Distribution Network Table ")
+    st.write("""
+      - **Columns:**
+        - `idDistributionNetwork`: Unique identifier for each distribution network record.
+        - `code`: Code representing the distribution network.
+        - `total_length`: Total length of the distribution network (in kilometers).
+        - `number_of_pipelines`: Total number of pipelines in the network.
+        - `pipeline_diameter`: Diameter of the pipelines (in millimeters).
+        - `pipeline_material`: Material of the pipelines (e.g., PVC, steel).
+        - `number_of_pumping_stations`: Total number of pumping stations in the network.
+        - `number_of_reservoirs`: Total number of reservoirs in the network.
+        - `total_storage_capacity`: Total storage capacity of the reservoirs (in cubic meters).
+        - `average_age_of_pipelines`: Average age of the pipelines (in years).
+        - `leakage_rate`: Leakage rate in the distribution network (in percentage).
+        - `maintenance_costs`: Annual maintenance costs for the distribution network (in currency units).
+        - `idTreatmentPlant`: Foreign key linking to the treatment plant table.
+      """)
