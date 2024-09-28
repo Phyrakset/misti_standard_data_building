@@ -1,6 +1,8 @@
 import streamlit as st
 from PIL import Image
 from scripts.data_visualization import (# Water Resources
+                                        introduction,
+                                        describe_tables,
                                         visualize_outliers_in_abstraction,
                                         visualize_water_sources_by_availability,
                                         visualize_abstraction_bar_chart,
@@ -230,6 +232,8 @@ def main():
     if 'show_visualization' in st.session_state and st.session_state.show_visualization:
         st.header("Data Visualization")
         # Add visualizations here
+        introduction()
+        describe_tables()
         visualize_outliers_in_abstraction()
         visualize_water_sources_by_availability()
         visualize_abstraction_bar_chart()
