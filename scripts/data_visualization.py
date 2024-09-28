@@ -2,6 +2,7 @@ import streamlit as st
 from config import get_connection
 import pandas as pd
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -35,13 +36,18 @@ def fetch_data(table_name):
         "distribution_network": "data/distribution_network.csv"
     }
 
-    # Load the data from the CSV file
+
+     # Load the data from the CSV file
     file_path = table_to_file.get(table_name)
-    if file_path:
+    
+    if file_path and os.path.exists(file_path):
+        # Load from CSV
         df = pd.read_csv(file_path)
         return df
     else:
-        raise ValueError(f"Unknown table: {table_name}")
+        raise FileNotFoundError(f"Data file for {table_name} not found.")
+
+ 
 
 # Visualization function for outlier detection and box plot
 def visualize_outliers_in_abstraction():
