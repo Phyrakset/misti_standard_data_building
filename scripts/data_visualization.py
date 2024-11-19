@@ -5,9 +5,27 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.express as px
 
 
 
+
+def fetch_and_save_data(table_name, save_path):
+    conn = get_connection()  # Make sure your local database connection works
+    query = f"SELECT * FROM {table_name};"
+    df = pd.read_sql(query, conn)
+    conn.close()
+    df.to_csv(save_path, index=False)  # Save the data to a CSV file
+    return df
+
+# Example usage
+fetch_and_save_data("raw_watersource", "data/raw_watersource.csv")
+fetch_and_save_data("human_resources", "data/human_resources.csv")
+fetch_and_save_data("treatment_plant", "data/treatment_plant.csv")
+fetch_and_save_data("water_quality", "data/water_quality.csv")
+fetch_and_save_data("commercial", "data/commercial.csv")
+fetch_and_save_data("financial", "data/financial.csv")
+fetch_and_save_data("distribution_network", "data/distribution_network.csv")
 
 def fetch_data(table_name):
     # Dictionary to map table names to file paths
@@ -21,34 +39,16 @@ def fetch_data(table_name):
         "distribution_network": "data/distribution_network.csv"
     }
 
+    # Load the data from the CSV file
     file_path = table_to_file.get(table_name)
-    
-    if is_cloud_env():
-        if file_path and os.path.exists(file_path):
-            # Load data from the CSV file
-            df = pd.read_csv(file_path)
-            return df
-        else:
-            raise FileNotFoundError(f"File for {table_name} not found.")
-    else:
-        # Local environment: fetch from the database (already working)
-        conn = get_connection()
-        query = f"SELECT * FROM {table_name}"
-        df = pd.read_sql(query, conn)
-        conn.close()
-        return df
-
-
-     # Load the data from the CSV file
-    file_path = table_to_file.get(table_name)
-    
-    if file_path and os.path.exists(file_path):
-        # Load from CSV
+    if file_path:
         df = pd.read_csv(file_path)
         return df
     else:
-        raise FileNotFoundError(f"Data file for {table_name} not found.")
+        raise ValueError(f"Unknown table: {table_name}")
 
+
+    
  
 
 # Visualization function for outlier detection and box plot
@@ -248,8 +248,8 @@ def visualize_grouped_abstraction():
 
     st.write("""
     - **Bars**: There are two bars in the chart.
-      - **Red Bar**: Labeled “Not Available Year Round,” with a total abstraction value of 22516.8 m³.
-      - **Green Bar**: Labeled “Available Year Round,” with a total abstraction value of 38902.9 m³.
+      - **Red Bar**: Labeled “Not Available Year Round,” with a total abstraction value of 22643.2 m³.
+      - **Green Bar**: Labeled “Available Year Round,” with a total abstraction value of 38776.5 m³.
     - **Insights**:
       - **Comparison**: The chart visually compares the total abstraction quantities based on their availability throughout the year.
       - **Higher Abstraction**: The “Available Year Round” category has a significantly higher total abstraction (38902.9 m³) compared to the “Not Available Year Round” category (22516.8 m³).
@@ -258,48 +258,41 @@ def visualize_grouped_abstraction():
 
 
 # Visualization function for total abstraction capacity
+# Visualization function for total abstraction capacity
 def visualize_total_abstraction_capacity():
-    st.subheader("Total Abstraction Capacity for Each Raw Water Source")
+    st.subheader("Total Abstraction Capacity Trend for Each Raw Water Source")
     
     # Fetch data
     data1 = fetch_data("raw_watersource")
+    data1 = data1.sort_values(by='total_abstraction', ascending=False)
     
-    # Plot bar chart
+    # Plot line chart
     plt.figure(figsize=(12, 6))
-    sns.barplot(x='RawWaterSource_name', y='total_abstraction', data=data1)
-    plt.title('Total Abstraction Capacity for Each Raw Water Source')
-    plt.xlabel('Raw Water Source')
-    plt.ylabel('Total Abstraction (in cubic meters)')
-    plt.xticks(rotation=90)
+    sns.lineplot(
+        x='RawWaterSource_name', 
+        y='total_abstraction', 
+        data=data1, 
+        marker='o',
+        linewidth=2.5,
+        color='blue'
+    )
+    plt.title('Total Abstraction Capacity Trend', fontsize=16, fontweight='bold')
+    plt.xlabel('Raw Water Source', fontsize=12)
+    plt.ylabel('Total Abstraction (in cubic meters)', fontsize=12)
+    plt.xticks(rotation=45, fontsize=10, ha='right')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     st.pyplot(plt)
 
     st.write("""
     - **Bars**: Each bar represents the total abstraction capacity of a water source, with varying heights indicating different capacities.
     - **Water Sources and Abstraction Capacities**:
-      - `Mekong River`: High abstraction capacity.
-      - `Tonle Sap Lake`: High abstraction capacity.
-      - `Bassac River`: High abstraction capacity.
-      - `Prek Thnot River`: Moderate abstraction capacity.
-      - `Stung Sen River`: Moderate abstraction capacity.
-      - `Stung Treng River`: Moderate abstraction capacity.
-      - `Pursat River`: Moderate abstraction capacity.
-      - `Srepok River`: Moderate abstraction capacity.
-      - `Stung Chinit River`: Moderate abstraction capacity.
-      - `Stung Prek Kampong River`: Moderate abstraction capacity.
-      - `Stung Prek Thnot River`: Moderate abstraction capacity.
-      - `Stung Prek Pnov River`: Moderate abstraction capacity.
-      - `Stung Prek Tnaot River`: Moderate abstraction capacity.
-      - `Stung Prek Kdam River`: Moderate abstraction capacity.
-      - `Stung Prek Kbal River`: Moderate abstraction capacity.
-      - `Stung Prek Khsach River`: Moderate abstraction capacity.
-      - `Stung Prek Kranh River`: Moderate abstraction capacity.
-      - `Stung Prek Krouch River`: Moderate abstraction capacity.
-      - `Stung Prek Kroum River`: Moderate abstraction capacity.
-      - `Stung Prek Krouy River`: Moderate abstraction capacity.
-    - **Insights**:
-      - **Distribution**: The graph shows a wide range of abstraction capacities across different water sources.
-      - **High Capacity**: Mekong River, Tonle Sap Lake, and Bassac River have the highest abstraction capacities.
-      - **Variability**: There is significant variability in the abstraction capacities, indicating different levels of water availability from each source.
+      
+    - **Interpret** :
+Larger, more prominent rivers like the Mekong River and Tonle Sap Lake dominate total abstraction capacities, likely due to their size and accessibility.
+Smaller rivers and tributaries contribute less, potentially because of their limited capacity, geographical constraints, or lower demand.
+- **Insights:**
+The graph could help policymakers or engineers prioritize resource allocation, infrastructure development, or conservation efforts towards the most abstracted sources.
+
     """)
 
 
@@ -317,17 +310,14 @@ def human_resources_analysis():
     # Fetch and merge data
     df_merged12 = fetch_data_for_human_resources()
     
-    # Human Resources - Total Staff per Raw Water Source
-    st.subheader("Total Staff for Each Raw Water Source")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='total_staff', data=df_merged12, ax=ax)
-    ax.set_title('Total Number of Staff for Each Raw Water Source')
-    ax.set_xlabel('Raw Water Source Name')
-    ax.set_ylabel('Total Staff')
-    plt.xticks(rotation=90)  # Rotate x-axis labels to 90 degrees
-    plt.tight_layout()  # Adjust layout to prevent labels from being cut off
+    fig, ax = plt.subplots(figsize=(8, 8))
+    df_merged12.groupby('RawWaterSource_name')['total_staff'].sum().plot.pie(
+        autopct='%1.1f%%', startangle=90, ax=ax, legend=False
+    )
+    ax.set_ylabel('')  # Remove y-axis label for cleaner layout
+    ax.set_title('Proportion of Total Staff by Raw Water Source')
+    plt.tight_layout()
     st.pyplot(fig)
-
     st.write("""
     - **Distribution**: The chart shows a wide range of staff numbers across different water sources.
     - **High Staff Numbers**: Mekong River, Tonle Sap Lake, and Bassac River have the highest staff numbers.
@@ -371,53 +361,21 @@ def human_resources_analysis():
     - **Variability**: There is significant variability in the values, indicating different levels of human resource allocation and training efforts for each water resource.
     """)
 
+    fig = px.scatter(
+    df_merged12,
+    x='RawWaterSource_name',
+    y='staff_per_1000_subscribers',
+    size='total_staff',
+    color='staff_per_1000_subscribers',
+    title='Staff per 1000 Subscribers (Bubble Chart)',
+    labels={'staff_per_1000_subscribers': 'Staff/1000 Subscribers', 'RawWaterSource_name': 'Raw Water Source'},
+    size_max=50,
+    color_continuous_scale='Viridis'
+    )
+    fig.update_layout(xaxis_tickangle=45)
+    st.plotly_chart(fig)
 
-    # Dual Axis Plot: Total Staff and Staff per 1000 Subscribers
-    st.subheader("Total Staff and Staff per 1000 Subscribers for Each Raw Water Source")
-    fig, ax1 = plt.subplots(figsize=(18, 7))
-    
-    # Bar plot for total staff
-    ax1.bar(df_merged12['RawWaterSource_name'], df_merged12['total_staff'], color='skyblue', label='Total Staff')
-    ax1.set_xlabel('Raw Water Sources')
-    ax1.set_ylabel('Total Staff', color='skyblue')
-    ax1.tick_params(axis='y', labelcolor='skyblue')
-    ax1.set_xticklabels(df_merged12['RawWaterSource_name'], rotation=45, ha='right')
 
-    # Create a second y-axis to plot staff per 1000 subscribers
-    ax2 = ax1.twinx()
-    ax2.plot(df_merged12['RawWaterSource_name'], df_merged12['staff_per_1000_subscribers'], color='orange', marker='o', label='Staff per 1000 Subscribers')
-    ax2.set_ylabel('Staff per 1000 Subscribers', color='orange')
-    ax2.tick_params(axis='y', labelcolor='orange')
-
-    plt.title('Total Staff and Efficiency (Staff per 1000 Subscribers) per Raw Water Source')
-    fig.tight_layout()
-    ax1.legend(loc='upper left')
-    ax2.legend(loc='upper right')
-
-    st.pyplot(fig)
-
-    st.write("""
-    - Represented by blue bars.
-    - Indicates the number of staff members allocated to each raw water source.
-    - For example, the Mekong River has the highest number of total staff compared to other sources.
-    """)
-
-    st.write("""
-    - Represented by an orange line with markers.
-    - Shows the efficiency of staffing relative to the number of subscribers.
-    - This metric helps in understanding how well the human resources are distributed in relation to the demand (subscribers).
-    """)
-
-    # Human Resources - Staff per 1000 Subscribers
-    st.subheader("Staff per 1000 Subscribers")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='staff_per_1000_subscribers', data=df_merged12, ax=ax)
-    ax.set_title('Staff per 1000 Subscribers Ratio')
-    ax.set_xlabel('Raw Water Source Name')
-    ax.set_ylabel('Staff per 1000 Subscribers')
-    plt.xticks(rotation=90)
-    plt.tight_layout()
-    st.pyplot(fig)
 
     st.write("""
     - Represented by blue bars.
@@ -433,16 +391,23 @@ def human_resources_analysis():
     - **Note**: Staff per 1000 Subscribers is calculated as (total staff / subscribers) * 1000.
     """)
 
-    # Human Resources - Training Sessions per Raw Water Source
-    st.subheader("Training Sessions Conducted for Each Raw Water Source")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='training_sessions', data=df_merged12, ax=ax)
-    ax.set_title('Training Sessions per Raw Water Source')
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.lineplot(
+        x='RawWaterSource_name', 
+        y='training_sessions', 
+        marker='o', 
+        data=df_merged12, 
+        color='green', 
+        ax=ax
+    )
+    ax.set_title('Training Sessions Trend per Raw Water Source')
     ax.set_xlabel('Raw Water Source Name')
     ax.set_ylabel('Training Sessions')
     plt.xticks(rotation=90)
     plt.tight_layout()
     st.pyplot(fig)
+
+
 
     st.subheader("Key Insights")
 
@@ -470,15 +435,12 @@ def treatment_plant_visualizations():
     # Merge the data
     df_merged13 = pd.merge(data1, data3, on='idRawWaterSource')
 
-    # Plot: Treatment Losses for Each Plant
-    st.subheader("Treatment Losses for Each Plant")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='treatment_losses', data=df_merged13, ax=ax)
-    ax.set_title('Treatment Losses for Each Plant')
-    ax.set_xlabel('Treatment Plant of Water Resources')
-    ax.set_ylabel('Treatment Losses (%)')
-    plt.xticks(rotation=90)
+    fig, ax = plt.subplots(figsize=(8, 8))
+    df_pie = df_merged13.groupby('RawWaterSource_name')['treatment_losses'].sum()
+    ax.pie(df_pie, labels=df_pie.index, autopct='%1.1f%%', startangle=140, colors=sns.color_palette("pastel"))
+    ax.set_title('Proportion of Treatment Losses by Plant')
     st.pyplot(fig)
+
 
     st.subheader("Key Insights")
 
@@ -614,16 +576,16 @@ def treatment_plant_visualizations():
     Correlation between Fuel Consumption and Electricity Consumption: The graph shows a nearly perfect diagonal line from the bottom left to the top right, indicating a strong positive correlation between fuel consumption and electricity consumption. The correlation coefficient is labeled as 1.00, suggesting a perfect positive correlation. This means that as fuel consumption increases, electricity consumption also increases proportionally. Key Insights: Strong Positive Correlation: The perfect correlation (1.00) indicates that fuel and electricity consumption are closely linked. Any increase in fuel consumption is directly associated with an increase in electricity consumption. Efficiency Considerations: The strong correlation might suggest that both fuel and electricity are being consumed in tandem, possibly due to the operational requirements of the treatment plants. Understanding this relationship can help in optimizing the use of both resources to improve overall efficiency.
     """)
 
-    # Barplot: Chemical Consumption Across Treatment Plants
-    st.subheader("Chemical Consumption Across Treatment Plants")
-    data3_melted = df_merged13.melt(id_vars=['RawWaterSource_name'], value_vars=chemicals, var_name='Chemical', value_name='Consumption')
     fig, ax = plt.subplots(figsize=(12, 8))
-    sns.barplot(x='RawWaterSource_name', y='Consumption', hue='Chemical', data=data3_melted, ax=ax)
-    ax.set_title('Chemical Consumption Across Treatment Plants')
-    ax.set_xlabel('Treatment Plant fo Water Resources')
+    df_stacked = df_merged13.set_index('RawWaterSource_name')[chemicals]
+    df_stacked.plot(kind='bar', stacked=True, ax=ax, colormap='viridis')
+    ax.set_title('Chemical Consumption Across Treatment Plants (Stacked)')
+    ax.set_xlabel('Treatment Plant of Water Resources')
     ax.set_ylabel('Consumption (in units)')
     plt.xticks(rotation=90)
+    plt.tight_layout()
     st.pyplot(fig)
+
 
     st.write("""
     PAC Consumption: The blue bars represent PAC consumption across different treatment plants. There is variability in PAC consumption, with some plants using significantly more PAC than others. Lime Consumption: The orange bars indicate lime consumption. Similar to PAC, lime consumption varies across treatment plants, with some plants showing higher usage. Chlorine Consumption: The green bars show chlorine consumption. Chlorine usage also varies, with some plants consuming more chlorine than others. Key Insights: Variability in Chemical Consumption: The graph highlights the differences in chemical consumption across various treatment plants. This variability could be due to differences in water quality, treatment processes, or operational practices at each plant. Efficiency Considerations: Understanding the consumption patterns of these chemicals can help identify opportunities for optimizing chemical usage. Plants with higher chemical consumption might need to review their processes to improve efficiency and reduce costs.
@@ -639,23 +601,6 @@ def water_quality_analysis():
     df_merged134 = pd.merge(data4, df_merged13, on='idTreatmentPlant')
 
     st.title("Water Quality Analysis")
-
-    # Section 1: pH Level vs. Turbidity and Color
-    st.subheader("pH Level vs. Turbidity and Color")
-    
-    fig, ax = plt.subplots(1, 2, figsize=(14, 5))
-    sns.scatterplot(x='ph_level', y='turbidity', data=df_merged134, ax=ax[0], hue='RawWaterSource_name', palette='Set1')
-    ax[0].set_title("pH Level vs. Turbidity")
-    ax[0].set_xlabel("pH Level")
-    ax[0].set_ylabel("Turbidity")
-
-    sns.scatterplot(x='ph_level', y='color', data=df_merged134, ax=ax[1], hue='RawWaterSource_name', palette='Set1')
-    ax[1].set_title("pH Level vs. Color")
-    ax[1].set_xlabel("pH Level")
-    ax[1].set_ylabel("Color (in units)")
-
-    plt.tight_layout()
-    st.pyplot(fig)
 
     # Section 2: Treatment Losses vs Water Quality Parameters
     st.subheader("Treatment Losses vs Water Quality Parameters")
@@ -714,32 +659,43 @@ def commercial_analysis():
     st.title("Commercial Analysis")
 
     # Section 1: Population Served by Each Commercial Entity
-    st.subheader("Population Served by Each Commercial Entity")
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='population_served', data=df_merged135)
-    plt.title('Population Served by Each Commercial Entity')
-    plt.xlabel('Commercial Entity of Water Resources')
-    plt.ylabel('Population Served')
-    plt.xticks(rotation=90)  # Rotate x-axis labels to 90 degrees
-    plt.tight_layout()
-    st.pyplot(plt)
 
-    # Section 2: Water Production vs. Water Sold
+    fig = px.bar(
+        df_merged135, 
+        x='RawWaterSource_name', 
+        y='population_served', 
+        title='Population Served by Each Water Resource',
+        labels={'population_served': 'Population Served', 'RawWaterSource_name': 'Water Resources'},
+        text='population_served',  # Show population as text
+    )
+    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+    fig.update_layout(xaxis_tickangle=-90)
+    st.plotly_chart(fig)
+
+
+    # Scatter plot with trendline
     st.subheader("Water Production vs. Water Sold by Commercial Entities")
     plt.figure(figsize=(17, 6))
-    sns.barplot(data=df_merged1356, x='RawWaterSource_name', y='Water_Production', color='blue', label='Water Production')
-    sns.barplot(data=df_merged1356, x='RawWaterSource_name', y='water_sold', color='orange', label='Water Sold')
+
+    # Scatter plot to show relationship
+    sns.scatterplot(data=df_merged1356, x='Water_Production', y='water_sold', color='blue')
+
+    # Adding a regression line to show the trend
+    sns.regplot(data=df_merged1356, x='Water_Production', y='water_sold', scatter=False, color='orange')
+
     plt.title('Water Production vs. Water Sold by Commercial Entities')
-    plt.xlabel('Commercial Entities of Water Ressources')
-    plt.ylabel('Water Volume (m³)')
-    plt.legend()
-    plt.xticks(rotation=45)
+    plt.xlabel('Water Production (m³)')
+    plt.ylabel('Water Sold (m³)')
     st.pyplot(plt)
 
-    # Section 3: Average Daily Consumption per Capita
+    # Violin plot
     st.subheader("Average Daily Consumption per Capita by Commercial Entities")
     plt.figure(figsize=(17, 6))
-    sns.barplot(data=df_merged1356, x='RawWaterSource_name', y='average_consumption_per_capita', palette='viridis')
+
+    # Create a violin plot to visualize the distribution
+    sns.violinplot(data=df_merged1356, x='RawWaterSource_name', y='average_consumption_per_capita', palette='viridis')
+
+    # Adding labels and title
     plt.title('Average Daily Consumption per Capita by Commercial Entities')
     plt.xlabel('Commercial Entities of Water Resources')
     plt.ylabel('Average Consumption per Capita (m³)')
@@ -759,16 +715,19 @@ def commercial_analysis():
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Section 5: Financial Overview
+    # Stacked bar chart
     st.subheader("Financial Overview: Cash from Water Sales and Other Cash")
-    plt.figure(figsize=(10, 6))
-    sns.barplot(data=df_merged1356, x='RawWaterSource_name', y='cash_from_water_sales', color='green', label='Cash from Water Sales')
-    sns.barplot(data=df_merged1356, x='RawWaterSource_name', y='other_cash', color='purple', label='Other Cash')
+    plt.figure(figsize=(20, 6))
+
+    # Plotting a stacked bar chart
+    df_merged1356.set_index('RawWaterSource_name')[['cash_from_water_sales', 'other_cash']].plot(kind='bar', stacked=True, color=['green', 'purple'])
+
     plt.title('Financial Overview: Cash from Water Sales and Other Cash')
     plt.xlabel('Commercial Entities of Water Resources')
-    plt.ylabel('Cash Amount')
-    plt.legend()
-    plt.xticks(rotation=45)
+    plt.ylabel('Cash Amount in ($)')
+    plt.xticks(rotation=80,fontsize=5)
+    plt.legend(["Cash from Water Sales", "Other Cash"])
+
     st.pyplot(plt)
 
     # Section 6: Tariff Comparison
@@ -785,59 +744,102 @@ def commercial_analysis():
 
     plt.tight_layout()
     st.pyplot(plt)
+  
 
-    # Section 7: Debt to Equity Ratio vs. Return on Equity
-    st.subheader("Debt to Equity Ratio vs. Return on Equity")
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=df_merged1356, x='debt_to_equity_ratio', y='return_on_equity', hue='RawWaterSource_name')
-    plt.title('Debt to Equity Ratio vs. Return on Equity')
-    plt.xlabel('Debt to Equity Ratio')
-    plt.ylabel('Return on Equity')
-    st.pyplot(plt)
 
-    # Section 8: Service Coverage Area
+    # Section 8: Service Coverage Area (Stacked Bar Chart)
     st.subheader("Service Coverage Area (License and Network)")
+
+    # Melting the dataframe for easier plotting
     coverage_areas = ['service_coverage_license_area', 'service_coverage_network_area']
     data5_coverage_melted = df_merged1356.melt(id_vars=['RawWaterSource_name'], value_vars=coverage_areas, var_name='CoverageType', value_name='Coverage')
-    
+
+    # Grouping by RawWaterSource_name and CoverageType to avoid duplicates and get the mean coverage
+    data_grouped = data5_coverage_melted.groupby(['RawWaterSource_name', 'CoverageType']).agg({'Coverage': 'mean'}).reset_index()
+
+    # Pivoting the grouped data for the stacked bar chart
+    data_pivoted = data_grouped.pivot(index='RawWaterSource_name', columns='CoverageType', values='Coverage')
+
+    # Plotting a stacked bar chart
     plt.figure(figsize=(12, 8))
-    sns.barplot(x='RawWaterSource_name', y='Coverage', hue='CoverageType', data=data5_coverage_melted)
-    plt.title('Service Coverage Area (License and Network)')
-    plt.xlabel('Commercial Entity of Water Resources')
-    plt.ylabel('Coverage Area (in percentage)')
-    plt.legend(title='Coverage Type')
-    plt.xticks(rotation=90)
+    data_pivoted.plot(kind='bar', stacked=True, color=['skyblue', 'orange'], width=0.8)
+
+    # Title and labels
+    plt.title('Service Coverage Area (License and Network)', fontsize=16)
+    plt.xlabel('Commercial Entity of Water Resources', fontsize=12)
+    plt.ylabel('Coverage Area (in percentage)', fontsize=12)
+
+    # Adjusting the x-axis tick labels font size
+    plt.xticks(rotation=90, fontsize=10)  # Rotate labels for better visibility
+
+    # Adjusting the legend font size
+    plt.legend(title='Coverage Type', fontsize=10)
+
+    # Ensuring the layout is tight to avoid overlap
     plt.tight_layout()
+
+    # Display the plot in Streamlit
     st.pyplot(plt)
 
-    # Section 9: Total Water Production and Water Sold
+    # Section 9: Total Water Production and Water Sold (Stacked Bar Chart)
     st.subheader("Total Water Production and Water Sold")
+
+    # Melting the dataframe to reshape for easier plotting
     water_metrics = ['Water_Production', 'water_sold']
     data5_water_melted = df_merged1356.melt(id_vars=['RawWaterSource_name'], value_vars=water_metrics, var_name='WaterMetric', value_name='Volume')
 
+    # Grouping by RawWaterSource_name and WaterMetric to aggregate values
+    data_grouped = data5_water_melted.groupby(['RawWaterSource_name', 'WaterMetric']).agg({'Volume': 'sum'}).reset_index()
+
+    # Pivoting the grouped data for the stacked bar chart
+    data_pivoted = data_grouped.pivot(index='RawWaterSource_name', columns='WaterMetric', values='Volume')
+
+    # Plotting a stacked bar chart
     plt.figure(figsize=(12, 8))
-    sns.barplot(x='RawWaterSource_name', y='Volume', hue='WaterMetric', data=data5_water_melted)
-    plt.title('Total Water Production and Water Sold')
-    plt.xlabel('Commercial Entity of Water Resouces')
-    plt.ylabel('Volume (in cubic meters)')
-    plt.legend(title='Water Metric')
-    plt.xticks(rotation=90)
+    data_pivoted.plot(kind='bar', stacked=True, color=['blue', 'orange'], width=0.8)
+
+    # Title and labels
+    plt.title('Total Water Production and Water Sold', fontsize=16)
+    plt.xlabel('Commercial Entity of Water Resources', fontsize=12)
+    plt.ylabel('Volume (in cubic meters)', fontsize=12)
+
+    # Adjusting the x-axis tick labels font size
+    plt.xticks(rotation=90, fontsize=10)  # Rotate labels for better visibility
+
+    # Adjusting the legend font size
+    plt.legend(title='Water Metric', fontsize=10)
+
+    # Ensuring the layout is tight to avoid overlap
     plt.tight_layout()
+
+    # Display the plot in Streamlit
     st.pyplot(plt)
 
-    # Section 10: Non-Revenue Water
+    # Section 10: Non-Revenue Water (Bar Chart)
     st.subheader("Non-Revenue Water in m³")
+
+    # Grouping by RawWaterSource_name to handle any potential duplicates by summing the non-revenue water values
+    data_grouped = df_merged1356.groupby('RawWaterSource_name')['non_revenue_water'].sum().reset_index()
+
+    # Plotting a bar chart for Non-Revenue Water
     plt.figure(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='non_revenue_water', data=df_merged1356)
-    plt.title('Non-Revenue Water in m³')
-    plt.xlabel('Commercial Entity of Water Resources')
-    plt.ylabel('Non-Revenue Water (in m³)')
-    plt.xticks(rotation=90)
+    sns.barplot(x='RawWaterSource_name', y='non_revenue_water', data=data_grouped)
+
+    # Adding title and labels
+    plt.title('Non-Revenue Water in m³', fontsize=16)
+    plt.xlabel('Commercial Entity of Water Resources', fontsize=12)
+    plt.ylabel('Non-Revenue Water (in m³)', fontsize=12)
+
+    # Adjusting the x-axis tick labels font size
+    plt.xticks(rotation=90, fontsize=10)  # Rotate labels for better visibility
+
+    # Ensuring the layout is tight to avoid overlap
     plt.tight_layout()
+
+    # Display the plot in Streamlit
     st.pyplot(plt)
 
 def plot_financial_data():
-
     st.header('Financials Analysis')
 
     data1 = fetch_data("raw_watersource")
@@ -855,83 +857,66 @@ def plot_financial_data():
     # Merge DataFrames if needed (example merging on idTreatmentPlant)
     df_merged1356 = pd.merge(df_merged135, data6, on='idCommercial')
     df = df_merged1356.copy()
+
     # Set the aesthetic style of the plots
     sns.set_style("whitegrid")
 
-    # Cash Flow from Water Sales
+    # Cash Flow from Water Sales (Stacked Bar Chart)
     st.subheader('Cash Flow from Water Sales for Each Commercial Entity')
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='cash_from_water_sales', data=df)
-    plt.title('Cash Flow from Water Sales for Each Commercial Entity')
+    df_cash_flow = df[['RawWaterSource_name', 'cash_from_water_sales']]
+    df_cash_flow = df_cash_flow.set_index('RawWaterSource_name')
+    df_cash_flow.plot(kind='bar', stacked=True, figsize=(10, 6), color=['green'])
+    plt.title('Cash Flow from Water Sales for Each Commercial Water Resource')
     plt.xlabel('Commercial Entity Water Sources')
     plt.ylabel('Cash from Water Sales ($)')
     plt.xticks(rotation=90)
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Amount Billed for Water Sales and Other Services
+    # Amount Billed for Water Sales and Other Services (Stacked Bar Chart)
     st.subheader('Amount Billed for Water Sales and Other Services')
-    billing_metrics = ['amount_billed_for_water_sales', 'amount_billed_for_other_services']
-    data_billing_melted = df.melt(id_vars=['RawWaterSource_name'], value_vars=billing_metrics, var_name='BillingMetric', value_name='Amount')
-    
-    plt.figure(figsize=(12, 8))
-    sns.barplot(x='RawWaterSource_name', y='Amount', hue='BillingMetric', data=data_billing_melted)
+    df_billing = df[['RawWaterSource_name', 'amount_billed_for_water_sales', 'amount_billed_for_other_services']]
+    df_billing = df_billing.set_index('RawWaterSource_name')
+    df_billing.plot(kind='bar', stacked=True, figsize=(12, 8), color=['blue', 'orange'])
     plt.title('Amount Billed for Water Sales and Other Services')
     plt.xlabel('Commercial Entity of Water Sources')
     plt.ylabel('Amount ($)')
-    plt.legend(title='Billing Metric')
     plt.xticks(rotation=90)
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Accounts Receivable and Bill Collection Ratios
+    # Accounts Receivable and Bill Collection Ratios (Stacked Bar Chart)
     st.subheader('Accounts Receivable and Bill Collection Ratios')
-    financial_metrics = ['accounts_receivable', 'bill_collection_ratio']
-    data_financial_melted = df.melt(id_vars=['RawWaterSource_name'], value_vars=financial_metrics, var_name='FinancialMetric', value_name='Value')
-    
-    plt.figure(figsize=(12, 8))
-    sns.barplot(x='RawWaterSource_name', y='Value', hue='FinancialMetric', data=data_financial_melted)
+    df_financial = df[['RawWaterSource_name', 'accounts_receivable', 'bill_collection_ratio']]
+    df_financial = df_financial.set_index('RawWaterSource_name')
+    df_financial.plot(kind='bar', stacked=True, figsize=(12, 8), color=['red', 'purple'])
     plt.title('Accounts Receivable and Bill Collection Ratios')
     plt.xlabel('Commercial Entity of Water Sources')
     plt.ylabel('Value')
-    plt.legend(title='Financial Metric')
     plt.xticks(rotation=90)
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Total Operating Expenses and Production Expenses
+    # Total Operating Expenses and Production Expenses (Stacked Bar Chart)
     st.subheader('Total Operating Expenses and Production Expenses')
-    expense_metrics = ['total_operating_expenses', 'production_expenses']
-    data_expense_melted = df.melt(id_vars=['RawWaterSource_name'], value_vars=expense_metrics, var_name='ExpenseMetric', value_name='Amount')
-    
-    plt.figure(figsize=(12, 8))
-    sns.barplot(x='RawWaterSource_name', y='Amount', hue='ExpenseMetric', data=data_expense_melted)
+    df_expenses = df[['RawWaterSource_name', 'total_operating_expenses', 'production_expenses']]
+    df_expenses = df_expenses.set_index('RawWaterSource_name')
+    df_expenses.plot(kind='bar', stacked=True, figsize=(12, 8), color=['green', 'brown'])
     plt.title('Total Operating Expenses and Production Expenses')
     plt.xlabel('Commercial Entity of Water Sources')
     plt.ylabel('Amount ($)')
-    plt.legend(title='Expense Metric')
     plt.xticks(rotation=90)
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Net Income for Each Commercial Entity
+    # Net Income for Each Commercial Entity (Stacked Bar Chart)
     st.subheader('Net Income for Each Commercial Entity')
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='net_income', data=df)
+    df_net_income = df[['RawWaterSource_name', 'net_income']]
+    df_net_income = df_net_income.set_index('RawWaterSource_name')
+    df_net_income.plot(kind='bar', stacked=True, figsize=(10, 6), color=['teal'])
     plt.title('Net Income for Each Commercial Entity')
     plt.xlabel('Commercial Entity of Water Sources')
     plt.ylabel('Net Income ($)')
-    plt.xticks(rotation=90)
-    plt.tight_layout()
-    st.pyplot(plt)
-
-    # Net Profit Margin
-    st.subheader('Net Profit Margin for Each Commercial Entity')
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='net_profit_margin', data=df)
-    plt.title('Net Profit Margin for Each Commercial Entity')
-    plt.xlabel('Commercial Entity of Water Resources')
-    plt.ylabel('Net Profit Margin (in percentage)')
     plt.xticks(rotation=90)
     plt.tight_layout()
     st.pyplot(plt)
@@ -972,21 +957,28 @@ def plot_distribution_network_data():
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Number of Leaks Repaired in Each Network
+    # Number of Leaks Repaired in Each Network (Heatmap)
     st.subheader('Number of Leaks Repaired in Each Network')
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='Number_leak_repaired', data=df)
-    plt.title('Number of Leaks Repaired in Each Network in Quarter')
-    plt.xlabel('Distribution Network Code')
-    plt.ylabel('Number of Leaks Repaired')
-    plt.xticks(rotation=90)
+
+    # Pivot the data for heatmap compatibility (RawWaterSource_name on rows, values on columns)
+    heatmap_data = df.pivot_table(index='RawWaterSource_name', values='Number_leak_repaired')
+
+    # Create the heatmap
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(heatmap_data, annot=True, fmt="g", cmap="YlGnBu", cbar_kws={'label': 'Number of Leaks Repaired'})
+    plt.title('Number of Leaks Repaired in Each Network')
+    plt.xlabel('Distribution Network')
+    plt.ylabel('Commercial Water Sources')
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Total Length of the Distribution Network
+
+    # Total Length of the Distribution Network (Horizontal Bar Chart)
+    # Total Length of the Distribution Network (Violin Plot)
     st.subheader('Total Length of the Distribution Network')
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='RawWaterSource_name', y='total_length', data=df)
+
+    plt.figure(figsize=(12, 6))
+    sns.violinplot(x='RawWaterSource_name', y='total_length', data=df, color='purple')
     plt.title('Total Length of the Distribution Network')
     plt.xlabel('Distribution Network Code')
     plt.ylabel('Total Length (in kilometers)')
@@ -994,20 +986,23 @@ def plot_distribution_network_data():
     plt.tight_layout()
     st.pyplot(plt)
 
-    # Storage Capacity and Supply Duration
+    # Storage Capacity and Supply Duration (Stacked Bar Chart)
     st.subheader('Storage Capacity (m3) and Supply Duration (H)')
     storage_metrics = ['Storagecapacity', 'Supply_duration']
     data_storage_melted = df.melt(id_vars=['RawWaterSource_name'], value_vars=storage_metrics, var_name='StorageMetric', value_name='Value')
 
-    # Multiply Supply_duration by 24
+    # Multiply Supply_duration by 24 to convert into hours (if needed)
     data_storage_melted['Value'] = data_storage_melted.apply(lambda row: row['Value'] * 24 if row['StorageMetric'] == 'Supply_duration' else row['Value'], axis=1)
 
+    # Pivot data to get the values in the correct format for a stacked bar chart
+    df_pivot = data_storage_melted.pivot_table(index='RawWaterSource_name', columns='StorageMetric', values='Value', aggfunc='sum')
+    
+    # Plot the stacked bar chart
     plt.figure(figsize=(12, 8))
-    sns.barplot(x='RawWaterSource_name', y='Value', hue='StorageMetric', data=data_storage_melted)
-    plt.title('Storage Capacity (m3) and Supply Duration (H)')
+    df_pivot.plot(kind='bar', stacked=True)
+    plt.title('Storage Capacity (m3) and Supply Duration (Hours) by Network')
     plt.xlabel('Distribution Network Code')
     plt.ylabel('Value')
-    plt.legend(title='Storage Metric')
     plt.xticks(rotation=90)
     plt.tight_layout()
     st.pyplot(plt)
